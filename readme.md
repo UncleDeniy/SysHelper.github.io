@@ -12,7 +12,7 @@
 
 [🌐 Посетить сайт](https://uncledeniy.github.io/SysHelper.github.io/) • [🚀 Быстрый старт](#быстрый-старт) • [🤝 Сообщество](#-сообщество) • [📝 Лицензия](#-лицензия)
 
-![SysHelper Preview](https://via.placeholder.com/800x400/0d1117/ffffff?text=SysHelper+Preview)
+![SysHelper Preview](images/logo.png)
 
 </div>
 
@@ -114,5 +114,6 @@
 </div>
 
 ---
+
 
 **SysHelper** - ваш надежный помощник в мире операционных систем! 🐧🍎🪟

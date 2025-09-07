@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark" data-dark-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SysHelper - Помощник по операционным системам</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --text-primary: #f0f6fc;
+            --text-secondary: #c9d1d9;
+            --accent: #58a6ff;
+            --border: #30363d;
+            --success: #3fb950;
+            --card-bg: #161b22;
+            --header-bg: #161b22;
+        }
+
+        [data-color-mode="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f6f8fa;
+            --text-primary: #24292f;
+            --text-secondary: #57606a;
+            --accent: #0969da;
+            --border: #d0d7de;
+            --success: #1a7f37;
+            --card-bg: #f6f8fa;
+            --header-bg: #f6f8fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            color: var(--accent);
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        /* Hero section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--accent), #8e44ad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+            border: 1px solid var(--accent);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--accent);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-secondary);
+            border-color: var(--text-secondary);
+        }
+
+        /* OS Grid */
+        .section {
+            padding: 4rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .os-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .os-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .os-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #8e44ad);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .os-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .os-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .os-icon {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            color: var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .os-card:hover .os-icon {
+            transform: scale(1.1);
+        }
+
+        .os-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .os-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .os-card:hover h3::after {
+            width: 100%;
+        }
+
+        .os-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .os-card .btn {
+            align-self: flex-start;
+            margin-top: auto;
+        }
+
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1.2rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav {
+                gap: 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .os-grid, .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        
+        /* New badge for cards */
+        .card-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(90deg, var(--accent), #8e44ad);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-terminal logo-icon"></i>
+                <span>SysHelper</span>
+            </a>
+            
+            <div class="nav">
+                <a href="#" class="nav-link">Главная</a>
+                <a href="#" class="nav-link">О проекте</a>
+                <a href="#" class="nav-link">Помощь</a>
+            </div>
+            
+            <div class="controls">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Тема</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title animate">Экспертная помощь с операционными системами</h1>
+                <p class="hero-description animate delay-1">
+                    Находите решения проблем, полезные руководства и советы по настройке для Linux, macOS, Windows и серверных систем. Профессиональная помощь сообществу.
+                </p>
+                <div class="hero-cta">
+                    <a href="#os" class="btn btn-primary animate delay-2">
+                        <i class="fas fa-hands-helping"></i>
+                        Получить помощь
+                    </a>
+                    <a href="#" class="btn btn-secondary animate delay-3">
+                        <i class="fab fa-github"></i>
+                        GitHub проекта
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="os">
+            <div class="container">
+                <h2 class="section-title">Выберите операционную систему для получения помощи</h2>
+                <div class="os-grid">
+                    <a href="os/linux/linux.html" class="os-card animate delay-1">
+                        <span class="card-badge">Популярно</span>
+                        <div class="os-icon">
+                            <i class="fab fa-linux"></i>
+                        </div>
+                        <h3>Linux</h3>
+                        <p>Решение проблем, настройка дистрибутивов, работа с командной строкой и администрирование систем на базе Linux.</p>
+                        <span class="btn btn-secondary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="os/macos/macos.html" class="os-card animate delay-2">
+                        <div class="os-icon">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <h3>macOS</h3>
+                        <p>Помощь с настройкой macOS, решение проблем совместимости, работа с терминалом и оптимизация производительности.</p>
+                        <span class="btn btn-secondary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="os/windows/windows.html" class="os-card animate delay-3">
+                        <span class="card-badge">Актуально</span>
+                        <div class="os-icon">
+                            <i class="fab fa-windows"></i>
+                        </div>
+                        <h3>Windows</h3>
+                        <p>Решение системных ошибок, оптимизация работы, настройка PowerShell и устранение проблем с производительностью.</p>
+                        <span class="btn btn-secondary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="os/windows-server/windows-server.html" class="os-card animate delay-4">
+                        <div class="os-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3>Windows Server</h3>
+                        <p>Администрирование, развертывание серверов, настройка ролей и служб в Windows Server.</p>
+                        <span class="btn btn-secondary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="os/linux-server/linux-server.html" class="os-card animate delay-4">
+                        <span class="card-badge">Новое</span>
+                        <div class="os-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3>Linux Server</h3>
+                        <p>Настройка серверов на Linux, администрирование, безопасность и развертывание веб-сервисов.</p>
+                        <span class="btn btn-secondary">Получить помощь</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Наши преимущества</h2>
+                <div class="features-grid">
+                    <div class="feature-card animate">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Быстрая помощь</h3>
+                        <p>Оперативные решения ваших проблем с операционными системами от опытных специалистов.</p>
+                    </div>
+                    
+                    <div class="feature-card animate delay-1">
+                        <div class="feature-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Проверенные решения</h3>
+                        <p>Все руководства и решения тщательно проверяются на актуальность и эффективность.</p>
+                    </div>
+                    
+                    <div class="feature-card animate delay-2">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Сообщество экспертов</h3>
+                        <p>Получайте помощь от сообщества профессионалов с многолетним опытом работы с различными ОС.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Главная</a>
+                <a href="#" class="footer-link">О проекте</a>
+                <a href="#" class="footer-link">Помощь</a>
+                <a href="#" class="footer-link">GitHub</a>
+                <a href="#" class="footer-link">Контакты</a>
+            </div>
+            <p>© 2025 SysHelper. Проект помощи с операционными системами.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme switching
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            const themeText = themeToggle.querySelector('span');
+            
+            // Check for saved theme preference or respect OS preference
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'light' || (!savedTheme && !systemPrefersDark)) {
+                document.documentElement.setAttribute('data-color-mode', 'light');
+                document.documentElement.setAttribute('data-dark-theme', 'light');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Светлая';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Тёмная';
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-color-mode');
+                
+                if (currentTheme === 'dark') {
+                    document.documentElement.setAttribute('data-color-mode', 'light');
+                    document.documentElement.setAttribute('data-dark-theme', 'light');
+                    themeIcon.className = 'fas fa-sun';
+                    themeText.textContent = 'Светлая';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-color-mode', 'dark');
+                    document.documentElement.setAttribute('data-dark-theme', 'dark');
+                    themeIcon.className = 'fas fa-moon';
+                    themeText.textContent = 'Тёмная';
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+            
+            // Animation on scroll
+            const animatedElements = document.querySelectorAll('.animate');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(10px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

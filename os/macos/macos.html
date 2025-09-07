@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark" data-dark-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помощь с macOS - SysHelper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --text-primary: #f0f6fc;
+            --text-secondary: #c9d1d9;
+            --accent: #58a6ff;
+            --border: #30363d;
+            --success: #3fb950;
+            --card-bg: #161b22;
+            --header-bg: #161b22;
+            --macos-gradient: linear-gradient(135deg, #007aff, #5856d6, #ff2d55);
+        }
+
+        [data-color-mode="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f6f8fa;
+            --text-primary: #24292f;
+            --text-secondary: #57606a;
+            --accent: #0969da;
+            --border: #d0d7de;
+            --success: #1a7f37;
+            --card-bg: #f6f8fa;
+            --header-bg: #f6f8fa;
+            --macos-gradient: linear-gradient(135deg, #007aff, #5856d6, #ff2d55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            color: var(--accent);
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .breadcrumb {
+            padding: 1.5rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hero section */
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: var(--macos-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Version Grid */
+        .version-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .version-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .version-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--macos-gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .version-card:hover {
+            border-color: #007aff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .version-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .version-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--macos-gradient);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .version-badge.soon {
+            background: linear-gradient(135deg, #ff2d55, #ff9500);
+        }
+
+        .version-badge.legacy {
+            background: linear-gradient(135deg, #8e8e93, #48484a);
+        }
+
+        .version-icon {
+            font-size: 3rem;
+            margin-bottom: 1.2rem;
+            color: #007aff;
+        }
+
+        .version-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .version-number {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .version-dates {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .version-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .version-features {
+            margin-top: auto;
+        }
+
+        .feature-tag {
+            display: inline-block;
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Support Section */
+        .support-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .support-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .support-card {
+            background-color: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .support-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .support-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav {
+                gap: 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .version-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="../../index.html" class="logo">
+                <i class="fas fa-terminal logo-icon"></i>
+                <span>SysHelper</span>
+            </a>
+            
+            <div class="nav">
+                <a href="../../index.html" class="nav-link">Главная</a>
+                <a href="#" class="nav-link">О проекте</a>
+                <a href="#" class="nav-link">Помощь</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="breadcrumb">
+            <a href="../../index.html">Главная</a> > <span>macOS</span>
+        </div>
+
+        <section class="hero">
+            <h1 class="hero-title animate">Помощь с macOS</h1>
+            <p class="hero-description animate delay-1">
+                Найдите решения для вашей версии macOS. От классических систем до самых современных версий - мы поможем решить проблемы, оптимизировать работу и освоить все возможности вашего Mac.
+            </p>
+        </section>
+
+        <section>
+            <h2 class="section-title">Выберите версию macOS</h2>
+            <div class="version-grid">
+                <!-- macOS 14 Sonoma -->
+                <a href="articles/sonoma-guides.html" class="version-card animate">
+                    <span class="version-badge">Актуальная</span>
+                    <div class="version-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <h3>macOS Sonoma</h3>
+                    <div class="version-number">Версия 14.x</div>
+                    <div class="version-dates">2023 - настоящее время</div>
+                    <p class="version-description">Последняя версия macOS с виджетами на рабочем столе, игровым режимом и улучшенными функциями безопасности.</p>
+                    <div class="version-features">
+                        <span class="feature-tag">Виджеты</span>
+                        <span class="feature-tag">Game Mode</span>
+                        <span class="feature-tag">Safari 17</span>
+                    </div>
+                </a>
+
+                <!-- macOS 13 Ventura -->
+                <a href="articles/ventura-guides.html" class="version-card animate delay-1">
+                    <div class="version-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <h3>macOS Ventura</h3>
+                    <div class="version-number">Версия 13.x</div>
+                    <div class="version-dates">2022 - 2023</div>
+                    <p class="version-description">Stage Manager, Continuity Camera и новые приложения "Настройки" и "Сообщения".</p>
+                    <div class="version-features">
+                        <span class="feature-tag">Stage Manager</span>
+                        <span class="feature-tag">Continuity</span>
+                        <span class="feature-tag">Security</span>
+                    </div>
+                </a>
+
+                <!-- macOS 12 Monterey -->
+                <a href="articles/monterey-guides.html" class="version-card animate delay-1">
+                    <div class="version-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <h3>macOS Monterey</h3>
+                    <div class="version-number">Версия 12.x</div>
+                    <div class="version-dates">2021 - 2022</div>
+                    <p class="version-description">Universal Control, Focus режимы и быстрые заметки для повышения продуктивности.</p>
+                    <div class="version-features">
+                        <span class="feature-tag">Universal Control</span>
+                        <span class="feature-tag">Focus</span>
+                        <span class="feature-tag">Shortcuts</span>
+                    </div>
+                </a>
+
+                <!-- macOS 11 Big Sur -->
+                <a href="articles/bigsur-guides.html" class="version-card animate delay-2">
+                    <div class="version-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <h3>macOS Big Sur</h3>
+                    <div class="version-number">Версия 11.x</div>
+                    <div class="version-dates">2020 - 2021</div>
+                    <p class="version-description">Полный редизайн интерфейса, поддержка Apple Silicon и новые приложения.</p>
+                    <div class="version-features">
+                        <span class="feature-tag">Apple Silicon</span>
+                        <span class="feature-tag">Redesign</span>
+                        <span class="feature-tag">Control Center</span>
+                    </div>
+                </a>
+
+                <!-- macOS 10.15 Catalina -->
+                <a href="articles/catalina-guides.html" class="version-card animate delay-2">
+                    <span class="version-badge legacy">Легаси</span>
+                    <div class="version-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <h3>macOS Catalina</h3>
+                    <div class="version-number">Версия 10.15</div>
+                    <div class="version-dates">2019 - 2020</div>
+                    <p class="version-description">Замена iTunes на отдельные приложения, Sidecar и запуск iPad приложений.</p>
+                    <div class="version-features">
+                        <span class="feature-tag">Sidecar</span>
+                        <span class="feature-tag">Catalyst</span>
+                        <span class="feature-tag">Music App</span>
+                    </div>
+                </a>
+
+                <!-- macOS 10.14 Mojave -->
+                <a href="articles/mojave-guides.html" class="version-card animate delay-3">
+                    <span class="version-badge legacy">Легаси</span>
+                    <div class="version-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <h3>macOS Mojave</h3>
+                    <div class="version-number">Версия 10.14</div>
+                    <div class="version-dates">2018 - 2019</div>
+                    <p class="version-description">Темный режим, динамические обои и новые приложения из iOS.</p>
+                    <div class="version-features">
+                        <span class="feature-tag">Dark Mode</span>
+                        <span class="feature-tag">Stacks</span>
+                        <span class="feature-tag">News App</span>
+                    </div>
+                </a>
+
+                <!-- macOS 10.0-10.13 -->
+                <div class="version-card animate delay-3">
+                    <span class="version-badge legacy">История</span>
+                    <div class="version-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>macOS 10.0-10.13</h3>
+                    <div class="version-number">Cheetah - High Sierra</div>
+                    <div class="version-dates">2001 - 2017</div>
+                    <p class="version-description">Классические версии Mac OS X: от Cheetah до High Sierra. Руководства по совместимости и миграции.</p>
+                    <div class="version-features">
+                        <span class="feature-tag">Classic</span>
+                        <span class="feature-tag">Migration</span>
+                        <span class="feature-tag">Compatibility</span>
+                    </div>
+                </div>
+
+                <!-- macOS 26 (Future) -->
+                <div class="version-card">
+                    <span class="version-badge soon">Скоро</span>
+                    <div class="version-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>macOS 26</h3>
+                    <div class="version-number">Будущая версия</div>
+                    <div class="version-dates">~2029 год</div>
+                    <p class="version-description">Следующее поколение macOS с искусственным интеллектом, расширенной реальностью и революционным интерфейсом.</p>
+                    <div class="version-features">
+                        <span class="feature-tag">AI</span>
+                        <span class="feature-tag">AR</span>
+                        <span class="feature-tag">Future Tech</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="support-section">
+            <h2 class="support-title">Нужна помощь с macOS?</h2>
+            <p>Мы поможем решить распространенные проблемы и ответим на вопросы:</p>
+            
+            <div class="support-grid">
+                <div class="support-card">
+                    <h4>🔄 Обновление системы</h4>
+                    <p>Помощь с обновлением до новой версии macOS, решение проблем совместимости</p>
+                </div>
+                
+                <div class="support-card">
+                    <h4>⚡ Оптимизация</h4>
+                    <p>Ускорение работы системы, освобождение места, настройка производительности</p>
+                </div>
+                
+                <div class="support-card">
+                    <h4>🔒 Безопасность</h4>
+                    <p>Настройка защиты, работа с FileVault, рекомендации по безопасности</p>
+                </div>
+                
+                <div class="support-card">
+                    <h4>🛠️ Восстановление</h4>
+                    <p>Решение проблем с загрузкой, восстановление системы, работа в Recovery</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="../../index.html" class="footer-link">Главная</a>
+                <a href="#" class="footer-link">О проекте</a>
+                <a href="#" class="footer-link">Помощь</a>
+                <a href="#" class="footer-link">GitHub</a>
+                <a href="#" class="footer-link">Контакты</a>
+            </div>
+            <p>© 2025 SysHelper. Помощь с операционными системами Apple.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation on scroll
+            const animatedElements = document.querySelectorAll('.animate');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(10px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

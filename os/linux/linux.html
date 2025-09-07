@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark" data-dark-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помощь с Linux - SysHelper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --text-primary: #f0f6fc;
+            --text-secondary: #c9d1d9;
+            --accent: #58a6ff;
+            --accent-ubuntu: #e95420;
+            --accent-debian: #d70a53;
+            --accent-fedora: #51a2da;
+            --accent-arch: #1793d1;
+            --accent-centos: #932279;
+            --accent-opensuse: #73ba25;
+            --border: #30363d;
+            --success: #3fb950;
+            --card-bg: #161b22;
+            --header-bg: #161b22;
+        }
+
+        [data-color-mode="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f6f8fa;
+            --text-primary: #24292f;
+            --text-secondary: #57606a;
+            --accent: #0969da;
+            --accent-ubuntu: #e95420;
+            --accent-debian: #d70a53;
+            --accent-fedora: #51a2da;
+            --accent-arch: #1793d1;
+            --accent-centos: #932279;
+            --accent-opensuse: #73ba25;
+            --border: #d0d7de;
+            --success: #1a7f37;
+            --card-bg: #f6f8fa;
+            --header-bg: #f6f8fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            color: var(--accent);
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .breadcrumb {
+            padding: 1rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hero section */
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Distributions Grid */
+        .section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .distro-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .distro-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .distro-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .distro-card[data-distro="ubuntu"]::before { background: var(--accent-ubuntu); }
+        .distro-card[data-distro="debian"]::before { background: var(--accent-debian); }
+        .distro-card[data-distro="fedora"]::before { background: var(--accent-fedora); }
+        .distro-card[data-distro="arch"]::before { background: var(--accent-arch); }
+        .distro-card[data-distro="centos"]::before { background: var(--accent-centos); }
+        .distro-card[data-distro="opensuse"]::before { background: var(--accent-opensuse); }
+
+        .distro-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .distro-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .distro-icon {
+            font-size: 3rem;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+
+        .distro-card[data-distro="ubuntu"] .distro-icon { color: var(--accent-ubuntu); }
+        .distro-card[data-distro="debian"] .distro-icon { color: var(--accent-debian); }
+        .distro-card[data-distro="fedora"] .distro-icon { color: var(--accent-fedora); }
+        .distro-card[data-distro="arch"] .distro-icon { color: var(--accent-arch); }
+        .distro-card[data-distro="centos"] .distro-icon { color: var(--accent-centos); }
+        .distro-card[data-distro="opensuse"] .distro-icon { color: var(--accent-opensuse); }
+
+        .distro-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+
+        .distro-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .distro-features {
+            margin: 1rem 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .distro-features li {
+            padding: 0.3rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .distro-features li i {
+            color: var(--success);
+            font-size: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+            border: 1px solid var(--accent);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--accent);
+        }
+
+        /* Popular Problems */
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .problem-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .problem-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .problem-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .problem-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav {
+                gap: 1rem;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .distro-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .problems-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="../../index.html" class="logo">
+                <i class="fas fa-terminal logo-icon"></i>
+                <span>SysHelper</span>
+            </a>
+            
+            <div class="nav">
+                <a href="../../index.html" class="nav-link">Главная</a>
+                <a href="#" class="nav-link">О проекте</a>
+                <a href="#" class="nav-link">Помощь</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../../index.html">Главная</a> / <span>Linux</span>
+            </div>
+        </div>
+
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title animate">Помощь с Linux</h1>
+                <p class="hero-description animate delay-1">
+                    Найдите решения для вашего дистрибутива Linux. Устранение проблем, настройка системы, 
+                    руководства по установке и администрированию. Выберите ваш дистрибутив для получения целевой помощи.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Выберите ваш дистрибутив</h2>
+                <div class="distro-grid">
+                    <a href="ubuntu/ubuntu.html" class="distro-card animate delay-1" data-distro="ubuntu">
+                        <div class="distro-icon">
+                            <i class="fab fa-ubuntu"></i>
+                        </div>
+                        <h3>Ubuntu</h3>
+                        <p>Самый популярный дистрибутив для начинающих и опытных пользователей</p>
+                        <ul class="distro-features">
+                            <li><i class="fas fa-check"></i> DEB пакеты</li>
+                            <li><i class="fas fa-check"></i> Snap поддержка</li>
+                            <li><i class="fas fa-check"></i> LTS версии</li>
+                        </ul>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="debian/debian.html" class="distro-card animate delay-2" data-distro="debian">
+                        <div class="distro-icon">
+                            <i class="fab fa-debian"></i>
+                        </div>
+                        <h3>Debian</h3>
+                        <p>Стабильный и надежный дистрибутив для серверов и рабочих станций</p>
+                        <ul class="distro-features">
+                            <li><i class="fas fa-check"></i> Стабильные пакеты</li>
+                            <li><i class="fas fa-check"></i> APT менеджер</li>
+                            <li><i class="fas fa-check"></i> Тестирование/Нестабильный</li>
+                        </ul>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="fedora/fedora.html" class="distro-card animate delay-3" data-distro="fedora">
+                        <div class="distro-icon">
+                            <i class="fab fa-fedora"></i>
+                        </div>
+                        <h3>Fedora</h3>
+                        <p>Инновационный дистрибутив с последними технологиями от Red Hat</p>
+                        <ul class="distro-features">
+                            <li><i class="fas fa-check"></i> RPM пакеты</li>
+                            <li><i class="fas fa-check"></i> DNF менеджер</li>
+                            <li><i class="fas fa-check"></i> SELinux по умолчанию</li>
+                        </ul>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="arch/arch.html" class="distro-card animate delay-4" data-distro="arch">
+                        <div class="distro-icon">
+                            <i class="fab fa-linux"></i>
+                        </div>
+                        <h3>Arch Linux</h3>
+                        <p>Минималистичный дистрибутив для опытных пользователей</p>
+                        <ul class="distro-features">
+                            <li><i class="fas fa-check"></i> Rolling release</li>
+                            <li><i class="fas fa-check"></i> Pacman менеджер</li>
+                            <li><i class="fas fa-check"></i> AUR репозитории</li>
+                        </ul>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="centos/centos.html" class="distro-card animate delay-4" data-distro="centos">
+                        <div class="distro-icon">
+                            <i class="fab fa-centos"></i>
+                        </div>
+                        <h3>CentOS</h3>
+                        <p>Предприятий-класс дистрибутив на основе Red Hat Enterprise Linux</p>
+                        <ul class="distro-features">
+                            <li><i class="fas fa-check"></i> Стабильность</li>
+                            <li><i class="fas fa-check"></i> Долгосрочная поддержка</li>
+                            <li><i class="fas fa-check"></i> Серверная оптимизация</li>
+                        </ul>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="opensuse/opensuse.html" class="distro-card animate delay-4" data-distro="opensuse">
+                        <div class="distro-icon">
+                            <i class="fab fa-suse"></i>
+                        </div>
+                        <h3>openSUSE</h3>
+                        <p>Мощный дистрибутив с инструментами администрирования YaST</p>
+                        <ul class="distro-features">
+                            <li><i class="fas fa-check"></i> Zypper менеджер</li>
+                            <li><i class="fas fa-check"></i> Tumbleweed/Leap</li>
+                            <li><i class="fas fa-check"></i> Btrfs по умолчанию</li>
+                        </ul>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Распространенные проблемы Linux</h2>
+                <div class="problems-grid">
+                    <div class="problem-card animate">
+                        <div class="problem-icon">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <h3>Проблемы с Wi-Fi</h3>
+                        <p>Решение проблем с драйверами беспроводных сетей и подключением</p>
+                        <a href="#" class="btn btn-primary">Решить проблему</a>
+                    </div>
+                    
+                    <div class="problem-card animate delay-1">
+                        <div class="problem-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3>Драйверы видеокарт</h3>
+                        <p>Установка и настройка драйверов NVIDIA, AMD и Intel</p>
+                        <a href="#" class="btn btn-primary">Решить проблему</a>
+                    </div>
+                    
+                    <div class="problem-card animate delay-2">
+                        <div class="problem-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h3>Установка программ</h3>
+                        <p>Работа с пакетными менеджерами и компиляция из исходников</p>
+                        <a href="#" class="btn btn-primary">Решить проблему</a>
+                    </div>
+                    
+                    <div class="problem-card animate delay-3">
+                        <div class="problem-icon">
+                            <i class="fas fa-terminal"></i>
+                        </div>
+                        <h3>Командная строка</h3>
+                        <p>Изучение Bash, скрипты и автоматизация задач</p>
+                        <a href="#" class="btn btn-primary">Решить проблему</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="../../index.html" class="footer-link">Главная</a>
+                <a href="#" class="footer-link">О проекте</a>
+                <a href="#" class="footer-link">Помощь</a>
+                <a href="#" class="footer-link">GitHub</a>
+                <a href="#" class="footer-link">Контакты</a>
+            </div>
+            <p>© 2025 SysHelper. Помощь с операционными системами.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation on scroll
+            const animatedElements = document.querySelectorAll('.animate');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(10px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

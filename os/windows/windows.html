@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark" data-dark-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помощь с Windows - SysHelper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --text-primary: #f0f6fc;
+            --text-secondary: #c9d1d9;
+            --accent: #0078d7;
+            --border: #30363d;
+            --success: #3fb950;
+            --card-bg: #161b22;
+            --header-bg: #161b22;
+            --xp-color: #52b043;
+            --vista-color: #0078d7;
+            --win7-color: #f25022;
+            --win8-color: #0078d7;
+            --win10-color: #0078d7;
+            --win11-color: #0078d7;
+        }
+
+        [data-color-mode="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f6f8fa;
+            --text-primary: #24292f;
+            --text-secondary: #57606a;
+            --accent: #0067b8;
+            --border: #d0d7de;
+            --success: #1a7f37;
+            --card-bg: #f6f8fa;
+            --header-bg: #f6f8fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            color: var(--accent);
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .nav-link.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        /* Breadcrumbs */
+        .breadcrumbs {
+            padding: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .breadcrumbs a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hero section */
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Windows versions grid */
+        .section {
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .windows-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .windows-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .windows-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .windows-card.xp::before { background-color: var(--xp-color); }
+        .windows-card.vista::before { background-color: var(--vista-color); }
+        .windows-card.win7::before { background-color: var(--win7-color); }
+        .windows-card.win8::before { background-color: var(--win8-color); }
+        .windows-card.win10::before { background-color: var(--win10-color); }
+        .windows-card.win11::before { background-color: var(--win11-color); }
+
+        .windows-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .windows-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .windows-icon {
+            font-size: 3rem;
+            margin-bottom: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .windows-card:hover .windows-icon {
+            transform: scale(1.1);
+        }
+
+        .windows-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .windows-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .version-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-supported {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .status-unsupported {
+            background-color: #ff6b6b;
+            color: white;
+        }
+
+        .status-extended {
+            background-color: #ffa500;
+            color: white;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+            border: 1px solid var(--accent);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--accent);
+        }
+
+        /* Common problems */
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .problem-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .problem-icon {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .problem-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .problem-card p {
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav {
+                gap: 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .windows-grid, .problems-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="../../index.html" class="logo">
+                <i class="fas fa-terminal logo-icon"></i>
+                <span>SysHelper</span>
+            </a>
+            
+            <div class="nav">
+                <a href="../../index.html" class="nav-link">Главная</a>
+                <a href="#" class="nav-link active">Windows</a>
+                <a href="#" class="nav-link">Помощь</a>
+            </div>
+            
+            <div class="controls">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Тема</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="breadcrumbs">
+                <a href="../../index.html">Главная</a> > <span>Windows</span>
+            </div>
+        </div>
+
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title animate">Помощь с Windows</h1>
+                <p class="hero-description animate delay-1">
+                    Найдите решения проблем для вашей версии Windows. От классической XP до современной Windows 11 - мы поможем с настройкой, оптимизацией и устранением неполадок.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Выберите вашу версию Windows</h2>
+                <div class="windows-grid">
+                    <!-- Windows 11 -->
+                    <a href="articles/win11-guides.html" class="windows-card win11 animate delay-1">
+                        <div class="windows-icon">
+                            <i class="fab fa-windows"></i>
+                        </div>
+                        <div class="version-info">
+                            <span>2021 - настоящее время</span>
+                            <span class="status-badge status-supported">Поддерживается</span>
+                        </div>
+                        <h3>Windows 11</h3>
+                        <p>Современная ОС с обновленным интерфейсом, улучшенной безопасностью и производительностью. Решение проблем с обновлениями, совместимостью и настройкой.</p>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <!-- Windows 10 -->
+                    <a href="articles/win10-guides.html" class="windows-card win10 animate delay-2">
+                        <div class="windows-icon">
+                            <i class="fab fa-windows"></i>
+                        </div>
+                        <div class="version-info">
+                            <span>2015 - настоящее время</span>
+                            <span class="status-badge status-supported">Поддерживается</span>
+                        </div>
+                        <h3>Windows 10</h3>
+                        <p>Самая популярная версия Windows. Помощь с обновлениями, проблемами производительности, настройкой и исправлением ошибок.</p>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <!-- Windows 8.1 -->
+                    <a href="articles/win8-guides.html" class="windows-card win8 animate delay-3">
+                        <div class="windows-icon">
+                            <i class="fab fa-windows"></i>
+                        </div>
+                        <div class="version-info">
+                            <span>2013 - 2023</span>
+                            <span class="status-badge status-unsupported">Не поддерживается</span>
+                        </div>
+                        <h3>Windows 8.1</h3>
+                        <p>Решение проблем с интерфейсом Metro, совместимостью программ и переходом на более новые версии Windows.</p>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <!-- Windows 7 -->
+                    <a href="articles/win7-guides.html" class="windows-card win7 animate delay-4">
+                        <div class="windows-icon">
+                            <i class="fab fa-windows"></i>
+                        </div>
+                        <div class="version-info">
+                            <span>2009 - 2020</span>
+                            <span class="status-badge status-unsupported">Не поддерживается</span>
+                        </div>
+                        <h3>Windows 7</h3>
+                        <p>Классическая ОС, все еще используемая многими. Помощь с безопасностью, совместимостью и миграцией на новые версии.</p>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <!-- Windows Vista -->
+                    <a href="articles/vista-guides.html" class="windows-card vista animate delay-4">
+                        <div class="windows-icon">
+                            <i class="fab fa-windows"></i>
+                        </div>
+                        <div class="version-info">
+                            <span>2006 - 2017</span>
+                            <span class="status-badge status-unsupported">Не поддерживается</span>
+                        </div>
+                        <h3>Windows Vista</h3>
+                        <p>Решение проблем с производительностью, совместимостью драйверов и обновлением до более новых версий Windows.</p>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <!-- Windows XP -->
+                    <a href="articles/xp-guides.html" class="windows-card xp animate delay-4">
+                        <div class="windows-icon">
+                            <i class="fab fa-windows"></i>
+                        </div>
+                        <div class="version-info">
+                            <span>2001 - 2014</span>
+                            <span class="status-badge status-unsupported">Не поддерживается</span>
+                        </div>
+                        <h3>Windows XP</h3>
+                        <p>Легендарная ОС. Помощь с безопасностью, запуском старых приложений и совместимостью с современным оборудованием.</p>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Распространенные проблемы Windows</h2>
+                <div class="problems-grid">
+                    <div class="problem-card animate">
+                        <div class="problem-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Синий экран смерти (BSOD)</h3>
+                        <p>Диагностика и решение проблем с синими экранами, анализ дампов памяти и исправление ошибок.</p>
+                    </div>
+                    
+                    <div class="problem-card animate delay-1">
+                        <div class="problem-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h3>Медленная работа</h3>
+                        <p>Оптимизация производительности, очистка от мусора и настройка автозагрузки.</p>
+                    </div>
+                    
+                    <div class="problem-card animate delay-2">
+                        <div class="problem-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h3>Проблемы с обновлениями</h3>
+                        <p>Решение ошибок установки обновлений, очистка кэша и ручная установка.</p>
+                    </div>
+                    
+                    <div class="problem-card animate delay-3">
+                        <div class="problem-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Проблемы с безопасностью</h3>
+                        <p>Настройка Защитника Windows, удаление вирусов и восстановление системы.</p>
+                    </div>
+                    
+                    <div class="problem-card animate delay-4">
+                        <div class="problem-icon">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <h3>Драйверы устройств</h3>
+                        <p>Решение конфликтов драйверов, установка и обновление оборудования.</p>
+                    </div>
+                    
+                    <div class="problem-card animate delay-4">
+                        <div class="problem-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3>Сетевые проблемы</h3>
+                        <p>Диагностика подключения, сброс сетевых настроек и решение проблем с Wi-Fi.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="../../index.html" class="footer-link">Главная</a>
+                <a href="#" class="footer-link">О проекте</a>
+                <a href="#" class="footer-link">Помощь</a>
+                <a href="#" class="footer-link">GitHub</a>
+                <a href="#" class="footer-link">Контакты</a>
+            </div>
+            <p>© 2025 SysHelper. Помощь с операционными системами.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme switching
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            const themeText = themeToggle.querySelector('span');
+            
+            // Check for saved theme preference or respect OS preference
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'light' || (!savedTheme && !systemPrefersDark)) {
+                document.documentElement.setAttribute('data-color-mode', 'light');
+                document.documentElement.setAttribute('data-dark-theme', 'light');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Светлая';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Тёмная';
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-color-mode');
+                
+                if (currentTheme === 'dark') {
+                    document.documentElement.setAttribute('data-color-mode', 'light');
+                    document.documentElement.setAttribute('data-dark-theme', 'light');
+                    themeIcon.className = 'fas fa-sun';
+                    themeText.textContent = 'Светлая';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-color-mode', 'dark');
+                    document.documentElement.setAttribute('data-dark-theme', 'dark');
+                    themeIcon.className = 'fas fa-moon';
+                    themeText.textContent = 'Тёмная';
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+            
+            // Animation on scroll
+            const animatedElements = document.querySelectorAll('.animate');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(10px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

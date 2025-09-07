@@ -19,6 +19,7 @@
             --accent-nginx: #009639;
             --accent-apache: #d22128;
             --accent-docker: #2496ed;
+            --accent-scripts: #8dc891;
             --border: #30363d;
             --success: #3fb950;
             --card-bg: #161b22;
@@ -38,6 +39,7 @@
             --accent-nginx: #009639;
             --accent-apache: #d22128;
             --accent-docker: #2496ed;
+            --accent-scripts: #2c974b;
             --border: #d0d7de;
             --success: #1a7f37;
             --card-bg: #f6f8fa;
@@ -64,7 +66,6 @@
             padding: 0 1.5rem;
         }
 
-        /* Header */
         header {
             background-color: var(--header-bg);
             border-bottom: 1px solid var(--border);
@@ -152,7 +153,6 @@
             background-color: var(--bg-secondary);
         }
 
-        /* Hero section */
         .hero {
             padding: 3rem 0;
             border-bottom: 1px solid var(--border);
@@ -171,7 +171,6 @@
             margin-bottom: 2rem;
         }
 
-        /* Server Categories */
         .section {
             padding: 3rem 0;
             border-bottom: 1px solid var(--border);
@@ -232,6 +231,7 @@
         .server-card[data-service="nginx"]::before { background: var(--accent-nginx); }
         .server-card[data-service="apache"]::before { background: var(--accent-apache); }
         .server-card[data-service="docker"]::before { background: var(--accent-docker); }
+        .server-card[data-category="scripts"]::before { background: var(--accent-scripts); }
 
         .server-card:hover {
             transform: translateY(-5px);
@@ -259,6 +259,7 @@
         .server-card[data-service="nginx"] .server-icon { color: var(--accent-nginx); }
         .server-card[data-service="apache"] .server-icon { color: var(--accent-apache); }
         .server-card[data-service="docker"] .server-icon { color: var(--accent-docker); }
+        .server-card[data-category="scripts"] .server-icon { color: var(--accent-scripts); }
 
         .server-card h3 {
             font-size: 1.3rem;
@@ -304,7 +305,6 @@
             background-color: var(--bg-secondary);
         }
 
-        /* Popular Articles */
         .articles-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -335,7 +335,74 @@
             font-size: 0.9rem;
         }
 
-        /* Footer */
+        .scripts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .script-category {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .script-category h3 {
+            color: var(--accent-scripts);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .script-item {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            border-left: 3px solid var(--accent-scripts);
+        }
+
+        .script-item h4 {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .script-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .script-code {
+            background-color: var(--bg-primary);
+            padding: 0.8rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            margin-top: 0.5rem;
+        }
+
+        .copy-btn {
+            background: var(--accent-scripts);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            transition: opacity 0.2s;
+        }
+
+        .copy-btn:hover {
+            opacity: 0.9;
+        }
+
         footer {
             padding: 3rem 0;
             text-align: center;
@@ -360,7 +427,6 @@
             text-decoration: underline;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
@@ -382,6 +448,10 @@
             .server-stats {
                 flex-direction: column;
                 gap: 0.5rem;
+            }
+            
+            .scripts-container {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -562,6 +632,87 @@
         </section>
 
         <section class="section">
+            <h2 class="section-title">Общие скрипты</h2>
+            
+            <a href="articles/common-scripts.html" class="server-card animate" data-category="scripts">
+                <div class="server-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Полезные скрипты для администрирования</h3>
+                <p>Коллекция готовых скриптов для автоматизации рутинных задач серверного администрирования.</p>
+                <div class="server-stats">
+                    <span class="stat"><i class="fas fa-toolbox"></i> Утилиты: 20+</span>
+                    <span class="stat"><i class="fas fa-clock"></i> Экономия времени: 90%</span>
+                </div>
+                <span class="btn">Посмотреть скрипты</span>
+            </a>
+
+            <div class="scripts-container">
+                <div class="script-category">
+                    <h3>Скрипты для мониторинга</h3>
+                    
+                    <div class="script-item">
+                        <h4>Мониторинг использования диска</h4>
+                        <p>Отслеживает использование дискового пространства и отправляет уведомления при превышении лимита.</p>
+                        <div class="script-code">
+                            #!/bin/bash<br>
+                            THRESHOLD=90<br>
+                            USAGE=$(df / | grep / | awk '{ print $5 }' | sed 's/%//g')<br>
+                            if [ $USAGE -gt $THRESHOLD ]; then<br>
+                            &nbsp;&nbsp;echo "Диск почти заполнен: $USAGE%" | mail -s "Дисковое предупреждение" admin@example.com<br>
+                            fi
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    
+                    <div class="script-item">
+                        <h4>Мониторинг нагрузки на CPU</h4>
+                        <p>Проверяет загрузку процессора и уведомляет о высокой нагрузке.</p>
+                        <div class="script-code">
+                            #!/bin/bash<br>
+                            LOAD=$(uptime | awk -F'load average:' '{ print $2 }' | cut -d, -f1 | tr -d ' ')<br>
+                            MAX_LOAD=2.0<br>
+                            if (( $(echo "$LOAD > $MAX_LOAD" | bc -l) )); then<br>
+                            &nbsp;&nbsp;echo "Высокая нагрузка CPU: $LOAD" | mail -s "Предупреждение CPU" admin@example.com<br>
+                            fi
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                </div>
+                
+                <div class="script-category">
+                    <h3>Скрипты для резервного копирования</h3>
+                    
+                    <div class="script-item">
+                        <h4>Автоматическое резервное копирование</h4>
+                        <p>Создает резервные копии указанных директорий с датой в имени файла.</p>
+                        <div class="script-code">
+                            #!/bin/bash<br>
+                            BACKUP_DIR="/backup"<br>
+                            SOURCE_DIRS=("/var/www" "/etc")<br>
+                            DATE=$(date +%Y-%m-%d)<br>
+                            tar -czf $BACKUP_DIR/backup-$DATE.tar.gz ${SOURCE_DIRS[@]} 2>/dev/null
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    
+                    <div class="script-item">
+                        <h4>Удаление старых резервных копий</h4>
+                        <p>Удаляет резервные копии старше указанного количества дней.</p>
+                        <div class="script-code">
+                            #!/bin/bash<br>
+                            BACKUP_DIR="/backup"<br>
+                            FIND_ALL_BACKUPS=$(find $BACKUP_DIR -name "*.tar.gz" -type f)<br>
+                            DAYS=30<br>
+                            find $BACKUP_DIR -name "*.tar.gz" -type f -mtime +$DAYS -delete
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
             <h2 class="section-title">Популярные руководства</h2>
             
             <div class="articles-grid">
@@ -597,18 +748,16 @@
                 <a href="#" class="footer-link">GitHub</a>
                 <a href="#" class="footer-link">Контакты</a>
             </div>
-            <p>© 2025 SysHelper. Профессиональная помощь с серверными системами.</p>
+            <p>© 2025 SysHelper. Помощь с серверными системами.</p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Theme switching
             const themeToggle = document.getElementById('theme-toggle');
             const themeIcon = themeToggle.querySelector('i');
             const themeText = themeToggle.querySelector('span');
             
-            // Check for saved theme preference or respect OS preference
             const savedTheme = localStorage.getItem('theme');
             const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             
@@ -639,8 +788,6 @@
                     localStorage.setItem('theme', 'dark');
                 }
             });
-            
-            // Animation on scroll
             const animatedElements = document.querySelectorAll('.animate');
             
             const observer = new IntersectionObserver((entries) => {
@@ -659,6 +806,22 @@
                 observer.observe(el);
             });
         });
+
+        function copyCode(button) {
+            const codeElement = button.previousElementSibling;
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            const originalText = button.textContent;
+            button.textContent = 'Скопировано!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        }
     </script>
 </body>
 </html>

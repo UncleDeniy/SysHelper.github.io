@@ -57,7 +57,6 @@
             padding: 0 1.5rem;
         }
 
-        /* Header */
         header {
             background-color: var(--header-bg);
             border-bottom: 1px solid var(--border);
@@ -132,7 +131,6 @@
             background-color: var(--bg-secondary);
         }
 
-        /* Breadcrumbs */
         .breadcrumbs {
             padding: 1rem 0;
             font-size: 0.9rem;
@@ -148,7 +146,6 @@
             text-decoration: underline;
         }
 
-        /* Hero section */
         .hero {
             text-align: center;
             padding: 3rem 0;
@@ -168,7 +165,6 @@
             margin: 0 auto 2rem;
         }
 
-        /* Windows versions grid */
         .section {
             padding: 3rem 0;
             border-bottom: 1px solid var(--border);
@@ -305,7 +301,6 @@
             color: var(--accent);
         }
 
-        /* Common problems */
         .problems-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -340,7 +335,86 @@
             color: var(--text-secondary);
         }
 
-        /* Footer */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .script-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .script-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .script-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .script-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .script-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .script-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .script-download {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .script-download:hover {
+            background-color: #0060b8;
+        }
+
         footer {
             padding: 3rem 0;
             text-align: center;
@@ -365,7 +439,6 @@
             text-decoration: underline;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
@@ -384,12 +457,19 @@
                 font-size: 1rem;
             }
             
-            .windows-grid, .problems-grid {
+            .windows-grid, .problems-grid, .script-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                border-bottom: 1px solid var(--border);
             }
         }
 
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -415,7 +495,6 @@
             
             <div class="nav">
                 <a href="../../index.html" class="nav-link">Главная</a>
-                <a href="../windows.html" class="nav-link">Windows</a>
                 <a href="#" class="nav-link active">Windows Server</a>
                 <a href="#" class="nav-link">Помощь</a>
             </div>
@@ -445,165 +524,257 @@
             </div>
         </section>
 
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">Выберите вашу версию Windows Server</h2>
-                <div class="windows-grid">
-                    <!-- Windows Server 2022 -->
-                    <a href="articles/server2022-guides.html" class="windows-card server2022 animate delay-1">
-                        <div class="windows-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <div class="version-info">
-                            <span>2021 - настоящее время</span>
-                            <span class="status-badge status-supported">Поддерживается</span>
-                        </div>
-                        <h3>Windows Server 2022</h3>
-                        <p>Современная серверная ОС с улучшенной безопасностью, гибридными возможностями и контейнерами. Решение проблем с развертыванием, Hyper-V и Azure интеграцией.</p>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <!-- Windows Server 2019 -->
-                    <a href="articles/server2019-guides.html" class="windows-card server2019 animate delay-2">
-                        <div class="windows-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <div class="version-info">
-                            <span>2018 - настоящее время</span>
-                            <span class="status-badge status-supported">Поддерживается</span>
-                        </div>
-                        <h3>Windows Server 2019</h3>
-                        <p>Стабильная серверная платформа с улучшенной поддержкой Kubernetes, подсистемой Linux и гибридными облачными возможностями.</p>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <!-- Windows Server 2016 -->
-                    <a href="articles/server2016-guides.html" class="windows-card server2016 animate delay-3">
-                        <div class="windows-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <div class="version-info">
-                            <span>2016 - 2027</span>
-                            <span class="status-badge status-supported">Поддерживается</span>
-                        </div>
-                        <h3>Windows Server 2016</h3>
-                        <p>Серверная ОС с Nano Server, контейнерами Windows и улучшенной безопасностью. Помощь с миграцией, настройкой ролей и устранением неполадок.</p>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <!-- Windows Server 2012 R2 -->
-                    <a href="articles/server2012-guides.html" class="windows-card server2012 animate delay-4">
-                        <div class="windows-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <div class="version-info">
-                            <span>2013 - 2023</span>
-                            <span class="status-badge status-extended">Расширенная поддержка</span>
-                        </div>
-                        <h3>Windows Server 2012 R2</h3>
-                        <p>Улучшенная версия Server 2012 с обновленным Hyper-V, Storage Spaces и автоматической дедупликацией данных.</p>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <!-- Windows Server 2008 R2 -->
-                    <a href="articles/server2008-guides.html" class="windows-card server2008 animate delay-4">
-                        <div class="windows-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <div class="version-info">
-                            <span>2009 - 2020</span>
-                            <span class="status-badge status-unsupported">Не поддерживается</span>
-                        </div>
-                        <h3>Windows Server 2008 R2</h3>
-                        <p>Серверная ОС с 64-битной архитектурой, улучшенным PowerShell и Hyper-V. Помощь с миграцией и поддержкой устаревших приложений.</p>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <!-- Windows Server 2003 -->
-                    <a href="articles/server2003-guides.html" class="windows-card server2003 animate delay-4">
-                        <div class="windows-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <div class="version-info">
-                            <span>2003 - 2015</span>
-                            <span class="status-badge status-unsupported">Не поддерживается</span>
-                        </div>
-                        <h3>Windows Server 2003</h3>
-                        <p>Классическая серверная ОС. Помощь с безопасностью, запуском старых серверных приложений и миграцией на современные системы.</p>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <!-- Windows 2000 Server -->
-                    <a href="articles/server2000-guides.html" class="windows-card server2000 animate delay-4">
-                        <div class="windows-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <div class="version-info">
-                            <span>2000 - 2010</span>
-                            <span class="status-badge status-unsupported">Не поддерживается</span>
-                        </div>
-                        <h3>Windows 2000 Server</h3>
-                        <p>Историческая серверная ОС. Решение проблем с совместимостью, поддержка устаревшего оборудования и миграция данных.</p>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                </div>
+        <div class="container">
+            <div class="tabs">
+                <div class="tab active" data-tab="versions">Версии Windows Server</div>
+                <div class="tab" data-tab="scripts">Общие скрипты</div>
             </div>
-        </section>
+        </div>
 
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">Распространенные проблемы Windows Server</h2>
-                <div class="problems-grid">
-                    <div class="problem-card animate">
-                        <div class="problem-icon">
-                            <i class="fas fa-network-wired"></i>
-                        </div>
-                        <h3>Проблемы с доменными службами</h3>
-                        <p>Диагностика и решение проблем с Active Directory, репликацией и аутентификацией.</p>
-                    </div>
-                    
-                    <div class="problem-card animate delay-1">
-                        <div class="problem-icon">
-                            <i class="fas fa-hdd"></i>
-                        </div>
-                        <h3>Накопители и RAID</h3>
-                        <p>Решение проблем с дисковыми массивами, восстановление данных и настройка Storage Spaces.</p>
-                    </div>
-                    
-                    <div class="problem-card animate delay-2">
-                        <div class="problem-icon">
-                            <i class="fas fa-cloud"></i>
-                        </div>
-                        <h3>Виртуализация Hyper-V</h3>
-                        <p>Настройка виртуальных машин, решение проблем с сетью и миграция виртуальных сред.</p>
-                    </div>
-                    
-                    <div class="problem-card animate delay-3">
-                        <div class="problem-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3>Безопасность и обновления</h3>
-                        <p>Настройка брандмауэра, управление обновлениями и политиками безопасности.</p>
-                    </div>
-                    
-                    <div class="problem-card animate delay-4">
-                        <div class="problem-icon">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <h3>Серверные роли</h3>
-                        <p>Установка и настройка DNS, DHCP, IIS и других серверных ролей.</p>
-                    </div>
-                    
-                    <div class="problem-card animate delay-4">
-                        <div class="problem-icon">
-                            <i class="fas fa-sync-alt"></i>
-                        </div>
-                        <h3>Резервное копирование</h3>
-                        <p>Настройка Windows Server Backup, восстановление данных и аварийное восстановление.</p>
+        <div class="tab-content active" id="versions-tab">
+            <section class="section">
+                <div class="container">
+                    <h2 class="section-title">Выберите вашу версию Windows Server</h2>
+                    <div class="windows-grid">
+                        <!-- Windows Server 2022 -->
+                        <a href="articles/server2022-guides.html" class="windows-card server2022 animate delay-1">
+                            <div class="windows-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="version-info">
+                                <span>2021 - настоящее время</span>
+                                <span class="status-badge status-supported">Поддерживается</span>
+                            </div>
+                            <h3>Windows Server 2022</h3>
+                            <p>Современная серверная ОС с улучшенной безопасностью, гибридными возможностями и контейнерами. Решение проблем с развертыванием, Hyper-V и Azure интеграцией.</p>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <!-- Windows Server 2019 -->
+                        <a href="articles/server2019-guides.html" class="windows-card server2019 animate delay-2">
+                            <div class="windows-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="version-info">
+                                <span>2018 - настоящее время</span>
+                                <span class="status-badge status-supported">Поддерживается</span>
+                            </div>
+                            <h3>Windows Server 2019</h3>
+                            <p>Стабильная серверная платформа с улучшенной поддержкой Kubernetes, подсистемой Linux и гибридными облачными возможностями.</p>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <!-- Windows Server 2016 -->
+                        <a href="articles/server2016-guides.html" class="windows-card server2016 animate delay-3">
+                            <div class="windows-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="version-info">
+                                <span>2016 - 2027</span>
+                                <span class="status-badge status-supported">Поддерживается</span>
+                            </div>
+                            <h3>Windows Server 2016</h3>
+                            <p>Серверная ОС с Nano Server, контейнерами Windows и улучшенной безопасностью. Помощь с миграцией, настройкой ролей и устранением неполадок.</p>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <!-- Windows Server 2012 R2 -->
+                        <a href="articles/server2012-guides.html" class="windows-card server2012 animate delay-4">
+                            <div class="windows-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="version-info">
+                                <span>2013 - 2023</span>
+                                <span class="status-badge status-extended">Расширенная поддержка</span>
+                            </div>
+                            <h3>Windows Server 2012 R2</h3>
+                            <p>Улучшенная версия Server 2012 с обновленным Hyper-V, Storage Spaces и автоматической дедупликацией данных.</p>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <!-- Windows Server 2008 R2 -->
+                        <a href="articles/server2008-guides.html" class="windows-card server2008 animate delay-4">
+                            <div class="windows-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="version-info">
+                                <span>2009 - 2020</span>
+                                <span class="status-badge status-unsupported">Не поддерживается</span>
+                            </div>
+                            <h3>Windows Server 2008 R2</h3>
+                            <p>Серверная ОС с 64-битной архитектурой, улучшенным PowerShell и Hyper-V. Помощь с миграцией и поддержкой устаревших приложений.</p>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <!-- Windows Server 2003 -->
+                        <a href="articles/server2003-guides.html" class="windows-card server2003 animate delay-4">
+                            <div class="windows-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="version-info">
+                                <span>2003 - 2015</span>
+                                <span class="status-badge status-unsupported">Не поддерживается</span>
+                            </div>
+                            <h3>Windows Server 2003</h3>
+                            <p>Классическая серверная ОС. Помощь с безопасностью, запуском старых серверных приложений и миграцией на современные системы.</p>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <!-- Windows 2000 Server -->
+                        <a href="articles/server2000-guides.html" class="windows-card server2000 animate delay-4">
+                            <div class="windows-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="version-info">
+                                <span>2000 - 2010</span>
+                                <span class="status-badge status-unsupported">Не поддерживается</span>
+                            </div>
+                            <h3>Windows 2000 Server</h3>
+                            <p>Историческая серверная ОС. Решение проблем с совместимостью, поддержка устаревшего оборудования и миграция данных.</p>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <h2 class="section-title">Распространенные проблемы Windows Server</h2>
+                    <div class="problems-grid">
+                        <div class="problem-card animate">
+                            <div class="problem-icon">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                            <h3>Проблемы с доменными службами</h3>
+                            <p>Диагностика и решение проблем с Active Directory, репликацией и аутентификацией.</p>
+                        </div>
+                        
+                        <div class="problem-card animate delay-1">
+                            <div class="problem-icon">
+                                <i class="fas fa-hdd"></i>
+                            </div>
+                            <h3>Накопители и RAID</h3>
+                            <p>Решение проблем с дисковыми массивами, восстановление данных и настройка Storage Spaces.</p>
+                        </div>
+                        
+                        <div class="problem-card animate delay-2">
+                            <div class="problem-icon">
+                                <i class="fas fa-cloud"></i>
+                            </div>
+                            <h3>Виртуализация Hyper-V</h3>
+                            <p>Настройка виртуальных машин, решение проблем с сетью и миграция виртуальных сред.</p>
+                        </div>
+                        
+                        <div class="problem-card animate delay-3">
+                            <div class="problem-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Безопасность и обновления</h3>
+                            <p>Настройка брандмауэра, управление обновлениями и политиками безопасности.</p>
+                        </div>
+                        
+                        <div class="problem-card animate delay-4">
+                            <div class="problem-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h3>Серверные роли</h3>
+                            <p>Установка и настройка DNS, DHCP, IIS и других серверных ролей.</p>
+                        </div>
+                        
+                        <div class="problem-card animate delay-4">
+                            <div class="problem-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h3>Резервное копирование</h3>
+                            <p>Настройка Windows Server Backup, восстановление данных и аварийное восстановление.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="tab-content" id="scripts-tab">
+            <section class="section">
+                <div class="container">
+                    <h2 class="section-title">Полезные скрипты для Windows Server</h2>
+                    <p class="hero-description">Готовые решения для автоматизации задач, оптимизации системы и решения распространенных проблем.</p>
+                    
+                    <div class="script-grid">
+                        <div class="script-card animate">
+                            <div class="script-icon">
+                                <i class="fas fa-broom"></i>
+                            </div>
+                            <h3>Очистка диска</h3>
+                            <p>Скрипт для удаления временных файлов, очистки кэшей и освобождения места на диске. Безопасная очистка системного мусора.</p>
+                            <a href="#" class="script-download">Скачать .ps1</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-1">
+                            <div class="script-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Базовые настройки безопасности</h3>
+                            <p>Автоматическая настройка базовых параметров безопасности, брандмауэра и политик доступа для Windows Server.</p>
+                            <a href="#" class="script-download">Скачать .ps1</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-1">
+                            <div class="script-icon">
+                                <i class="fas fa-backup"></i>
+                            </div>
+                            <h3>Резервное копирование</h3>
+                            <p>Автоматизация процесса резервного копирования важных файлов и папок с настройкой расписания.</p>
+                            <a href="#" class="script-download">Скачать .ps1</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-2">
+                            <div class="script-icon">
+                                <i class="fas fa-wrench"></i>
+                            </div>
+                            <h3>Устранение проблем с DNS</h3>
+                            <p>Диагностика и автоматическое исправление распространенных проблем с DNS сервером.</p>
+                            <a href="#" class="script-download">Скачать .ps1</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-2">
+                            <div class="script-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Управление пользователями</h3>
+                            <p>Массовое создание, изменение и управление пользователями Active Directory через скрипт.</p>
+                            <a href="#" class="script-download">Скачать .ps1</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-3">
+                            <div class="script-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h3>Мониторинг репликации</h3>
+                            <p>Проверка статуса репликации между контроллерами домена и автоматическое оповещение о проблемах.</p>
+                            <a href="#" class="script-download">Скачать .ps1</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-3">
+                            <div class="script-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <h3>Оптимизация производительности</h3>
+                            <p>Настройка параметров системы для повышения производительности сервера и оптимизации ресурсов.</p>
+                            <a href="#" class="script-download">Скачать .ps1</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-4">
+                            <div class="script-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <h3>Очистка логов</h3>
+                            <p>Автоматическая очистка старых логов событий и системных журналов для освобождения места.</p>
+                            <a href="#" class="script-download">Скачать .ps1</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
 
     <footer>
@@ -620,12 +791,10 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Theme switching
             const themeToggle = document.getElementById('theme-toggle');
             const themeIcon = themeToggle.querySelector('i');
             const themeText = themeToggle.querySelector('span');
             
-            // Check for saved theme preference or respect OS preference
             const savedTheme = localStorage.getItem('theme');
             const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             
@@ -657,7 +826,6 @@
                 }
             });
             
-            // Animation on scroll
             const animatedElements = document.querySelectorAll('.animate');
             
             const observer = new IntersectionObserver((entries) => {
@@ -674,6 +842,21 @@
                 el.style.transform = 'translateY(10px)';
                 el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 observer.observe(el);
+            });
+
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
             });
         });
     </script>

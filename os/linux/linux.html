@@ -18,6 +18,10 @@
             --accent-arch: #1793d1;
             --accent-centos: #932279;
             --accent-opensuse: #73ba25;
+            --accent-redos: #e62129;
+            --accent-mandriva: #ff6600;
+            --accent-openmandriva: #3d6cc9;
+            --accent-astra: #00a2ff;
             --border: #30363d;
             --success: #3fb950;
             --card-bg: #161b22;
@@ -36,6 +40,10 @@
             --accent-arch: #1793d1;
             --accent-centos: #932279;
             --accent-opensuse: #73ba25;
+            --accent-redos: #e62129;
+            --accent-mandriva: #ff6600;
+            --accent-openmandriva: #3d6cc9;
+            --accent-astra: #00a2ff;
             --border: #d0d7de;
             --success: #1a7f37;
             --card-bg: #f6f8fa;
@@ -62,7 +70,6 @@
             padding: 0 1.5rem;
         }
 
-        /* Header */
         header {
             background-color: var(--header-bg);
             border-bottom: 1px solid var(--border);
@@ -124,7 +131,6 @@
             text-decoration: underline;
         }
 
-        /* Hero section */
         .hero {
             text-align: center;
             padding: 3rem 0;
@@ -144,7 +150,6 @@
             margin: 0 auto 2rem;
         }
 
-        /* Distributions Grid */
         .section {
             padding: 3rem 0;
         }
@@ -196,6 +201,10 @@
         .distro-card[data-distro="arch"]::before { background: var(--accent-arch); }
         .distro-card[data-distro="centos"]::before { background: var(--accent-centos); }
         .distro-card[data-distro="opensuse"]::before { background: var(--accent-opensuse); }
+        .distro-card[data-distro="redos"]::before { background: var(--accent-redos); }
+        .distro-card[data-distro="mandriva"]::before { background: var(--accent-mandriva); }
+        .distro-card[data-distro="openmandriva"]::before { background: var(--accent-openmandriva); }
+        .distro-card[data-distro="astra"]::before { background: var(--accent-astra); }
 
         .distro-card:hover {
             transform: translateY(-5px);
@@ -218,6 +227,10 @@
         .distro-card[data-distro="arch"] .distro-icon { color: var(--accent-arch); }
         .distro-card[data-distro="centos"] .distro-icon { color: var(--accent-centos); }
         .distro-card[data-distro="opensuse"] .distro-icon { color: var(--accent-opensuse); }
+        .distro-card[data-distro="redos"] .distro-icon { color: var(--accent-redos); }
+        .distro-card[data-distro="mandriva"] .distro-icon { color: var(--accent-mandriva); }
+        .distro-card[data-distro="openmandriva"] .distro-icon { color: var(--accent-openmandriva); }
+        .distro-card[data-distro="astra"] .distro-icon { color: var(--accent-astra); }
 
         .distro-card h3 {
             font-size: 1.4rem;
@@ -275,7 +288,6 @@
             color: var(--accent);
         }
 
-        /* Popular Problems */
         .problems-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -312,7 +324,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Footer */
         footer {
             padding: 3rem 0;
             text-align: center;
@@ -339,7 +350,6 @@
             text-decoration: underline;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
@@ -363,7 +373,6 @@
             }
         }
 
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -377,6 +386,11 @@
         .delay-2 { animation-delay: 0.2s; }
         .delay-3 { animation-delay: 0.3s; }
         .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+        .delay-7 { animation-delay: 0.7s; }
+        .delay-8 { animation-delay: 0.8s; }
+        .delay-9 { animation-delay: 0.9s; }
     </style>
 </head>
 <body>
@@ -391,6 +405,7 @@
                 <a href="../../index.html" class="nav-link">Главная</a>
                 <a href="#" class="nav-link">О проекте</a>
                 <a href="#" class="nav-link">Помощь</a>
+                <a href="scripts.html" class="nav-link">Общие скрипты</a>
             </div>
         </div>
     </header>
@@ -472,7 +487,7 @@
                         <span class="btn btn-primary">Получить помощь</span>
                     </a>
                     
-                    <a href="centos/centos.html" class="distro-card animate delay-4" data-distro="centos">
+                    <a href="centos/centos.html" class="distro-card animate delay-5" data-distro="centos">
                         <div class="distro-icon">
                             <i class="fab fa-centos"></i>
                         </div>
@@ -486,7 +501,7 @@
                         <span class="btn btn-primary">Получить помощь</span>
                     </a>
                     
-                    <a href="opensuse/opensuse.html" class="distro-card animate delay-4" data-distro="opensuse">
+                    <a href="opensuse/opensuse.html" class="distro-card animate delay-6" data-distro="opensuse">
                         <div class="distro-icon">
                             <i class="fab fa-suse"></i>
                         </div>
@@ -496,6 +511,62 @@
                             <li><i class="fas fa-check"></i> Zypper менеджер</li>
                             <li><i class="fas fa-check"></i> Tumbleweed/Leap</li>
                             <li><i class="fas fa-check"></i> Btrfs по умолчанию</li>
+                        </ul>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="redos/redos.html" class="distro-card animate delay-7" data-distro="redos">
+                        <div class="distro-icon">
+                            <i class="fab fa-linux"></i>
+                        </div>
+                        <h3>Red OS</h3>
+                        <p>Российский дистрибутив для государственных организаций и предприятий</p>
+                        <ul class="distro-features">
+                            <li><i class="fas fa-check"></i> Российская разработка</li>
+                            <li><i class="fas fa-check"></i> Безопасность</li>
+                            <li><i class="fas fa-check"></i> Сертификация ФСТЭК</li>
+                        </ul>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="mandriva/mandriva.html" class="distro-card animate delay-8" data-distro="mandriva">
+                        <div class="distro-icon">
+                            <i class="fab fa-linux"></i>
+                        </div>
+                        <h3>Mandriva</h3>
+                        <p>Дистрибутив с удобным графическим интерфейсом и инструментами настройки</p>
+                        <ul class="distro-features">
+                            <li><i class="fas fa-check"></i> RPM пакеты</li>
+                            <li><i class="fas fa-check"></i> DrakX инструменты</li>
+                            <li><i class="fas fa-check"></i> Простота использования</li>
+                        </ul>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="openmandriva/openmandriva.html" class="distro-card animate delay-9" data-distro="openmandriva">
+                        <div class="distro-icon">
+                            <i class="fab fa-linux"></i>
+                        </div>
+                        <h3>OpenMandriva</h3>
+                        <p>Продолжение развития Mandriva Linux с современными технологиями</p>
+                        <ul class="distro-features">
+                            <li><i class="fas fa-check"></i> Rolling release</li>
+                            <li><i class="fas fa-check"></i> KDE Plasma</li>
+                            <li><i class="fas fa-check"></i> Оптимизация под современное железо</li>
+                        </ul>
+                        <span class="btn btn-primary">Получить помощь</span>
+                    </a>
+                    
+                    <a href="astra/astra.html" class="distro-card animate delay-9" data-distro="astra">
+                        <div class="distro-icon">
+                            <i class="fab fa-linux"></i>
+                        </div>
+                        <h3>Astra Linux</h3>
+                        <p>Российский защищенный дистрибутив для специальных задач</p>
+                        <ul class="distro-features">
+                            <li><i class="fas fa-check"></i> Высокая безопасность</li>
+                            <li><i class="fas fa-check"></i> Сертификация</li>
+                            <li><i class="fas fa-check"></i> Для госучреждений</li>
                         </ul>
                         <span class="btn btn-primary">Получить помощь</span>
                     </a>
@@ -553,6 +624,7 @@
                 <a href="../../index.html" class="footer-link">Главная</a>
                 <a href="#" class="footer-link">О проекте</a>
                 <a href="#" class="footer-link">Помощь</a>
+                <a href="scripts.html" class="footer-link">Общие скрипты</a>
                 <a href="#" class="footer-link">GitHub</a>
                 <a href="#" class="footer-link">Контакты</a>
             </div>
@@ -562,7 +634,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Animation on scroll
             const animatedElements = document.querySelectorAll('.animate');
             
             const observer = new IntersectionObserver((entries) => {

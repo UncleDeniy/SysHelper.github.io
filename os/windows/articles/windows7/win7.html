@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 7 - SysHelper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: #0c65b3 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230c65b3"/><path d="M0,0L100,100M100,0L0,100" stroke="%231276d1" stroke-width="1"/></svg>');
+            color: #000;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Панель задач */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(to bottom, #2c2c2c, #1c1c1c);
+            border-top: 1px solid #555;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            z-index: 1000;
+            box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .start-button {
+            background: linear-gradient(to bottom, #6dc06c, #439643);
+            border: 1px solid #2f7d2f;
+            border-radius: 3px;
+            padding: 2px 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 34px;
+            margin-right: 8px;
+        }
+
+        .start-button:hover {
+            background: linear-gradient(to bottom, #7dd07c, #53a652);
+        }
+
+        .start-button img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .taskbar-items {
+            display: flex;
+            gap: 4px;
+            flex-grow: 1;
+        }
+
+        .taskbar-item {
+            background: linear-gradient(to bottom, #4d4d4d, #3a3a3a);
+            border: 1px solid #2a2a2a;
+            border-radius: 3px;
+            padding: 2px 12px;
+            color: white;
+            font-size: 11px;
+            cursor: pointer;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 180px;
+        }
+
+        .taskbar-item.active {
+            background: linear-gradient(to bottom, #6a6a6a, #525252);
+            color: #fff;
+            border-color: #4a4a4a;
+        }
+
+        .system-tray {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 8px;
+        }
+
+        .tray-icon {
+            width: 24px;
+            height: 24px;
+            background: #4a4a4a;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .clock {
+            color: white;
+            font-size: 11px;
+            padding: 0 12px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(to bottom, #4a4a4a, #3a3a3a);
+            border: 1px solid #2a2a2a;
+            border-radius: 3px;
+            margin-left: 4px;
+        }
+
+        .show-desktop {
+            width: 5px;
+            height: 34px;
+            background: linear-gradient(to bottom, #4a4a4a, #3a3a3a);
+            border: 1px solid #2a2a2a;
+            border-radius: 3px;
+            margin-left: 4px;
+            cursor: pointer;
+        }
+
+        /* Окно */
+        .window {
+            position: absolute;
+            top: 100px;
+            left: 200px;
+            width: 700px;
+            height: 450px;
+            background: #f0f0f0;
+            border: 1px solid #a0a0a0;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            resize: both;
+            overflow: auto;
+            min-width: 400px;
+            min-height: 300px;
+        }
+
+        .title-bar {
+            height: 30px;
+            background: linear-gradient(to bottom, #ebebeb, #d0d0d0);
+            color: #333;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            cursor: move;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            border-bottom: 1px solid #a0a0a0;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-control {
+            width: 30px;
+            height: 24px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .window-control.minimize {
+            background: linear-gradient(to bottom, #f6f6f6, #e6e6e6);
+            color: #333;
+            border: 1px solid #b0b0b0;
+        }
+
+        .window-control.minimize:hover {
+            background: linear-gradient(to bottom, #e9f4fc, #d9e8f5);
+        }
+
+        .window-control.maximize {
+            background: linear-gradient(to bottom, #f6f6f6, #e6e6e6);
+            color: #333;
+            border: 1px solid #b0b0b0;
+        }
+
+        .window-control.maximize:hover {
+            background: linear-gradient(to bottom, #e9f4fc, #d9e8f5);
+        }
+
+        .window-control.close {
+            background: linear-gradient(to bottom, #e06a5c, #d45446);
+            color: white;
+            border: 1px solid #b53c30;
+        }
+
+        .window-control.close:hover {
+            background: linear-gradient(to bottom, #ef7a6c, #df6456);
+        }
+
+        .menu-bar {
+            height: 28px;
+            background: linear-gradient(to bottom, #f8f8f8, #f0f0f0);
+            border-bottom: 1px solid #d0d0d0;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 12px;
+            gap: 20px;
+        }
+
+        .menu-item {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 3px;
+        }
+
+        .menu-item:hover {
+            background: #d0e5f5;
+            color: #0c65b3;
+        }
+
+        .window-content {
+            flex: 1;
+            padding: 16px;
+            overflow: auto;
+            background: #ffffff;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+
+        /* Вкладки */
+        .tabs {
+            display: flex;
+            background: linear-gradient(to bottom, #f8f8f8, #f0f0f0);
+            border-bottom: 1px solid #d0d0d0;
+            padding: 0 12px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            background: linear-gradient(to bottom, #f0f0f0, #e8e8e8);
+            border: 1px solid #d0d0d0;
+            border-bottom: none;
+            margin-right: 2px;
+            cursor: pointer;
+            font-size: 12px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .tab.active {
+            background: linear-gradient(to bottom, #ffffff, #f8f8f8);
+            border-bottom: 1px solid #ffffff;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Иконки */
+        .icons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            text-align: center;
+            font-size: 12px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .icon:hover {
+            background: #d0e5f5;
+        }
+
+        .icon img {
+            width: 42px;
+            height: 42px;
+            margin-bottom: 6px;
+            object-fit: contain;
+        }
+
+        /* Списки */
+        .link-list {
+            list-style: none;
+        }
+
+        .link-list li {
+            margin: 12px 0;
+            padding: 6px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .link-list a {
+            color: #0c65b3;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 13px;
+            display: block;
+            padding: 4px 8px;
+            border-radius: 3px;
+        }
+
+        .link-list a:hover {
+            background: #e0f0ff;
+            color: #00478f;
+        }
+
+        /* Кнопки */
+        .win7-button {
+            background: linear-gradient(to bottom, #f6f6f6, #e6e6e6);
+            border: 1px solid #b0b0b0;
+            padding: 6px 16px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            color: #333;
+        }
+
+        .win7-button:hover {
+            background: linear-gradient(to bottom, #e9f4fc, #d9e8f5);
+            border-color: #7eb9e8;
+        }
+
+        .win7-button.primary {
+            background: linear-gradient(to bottom, #7db9e8, #1e5fa9);
+            color: white;
+            border-color: #1e5fa9;
+        }
+
+        .win7-button.primary:hover {
+            background: linear-gradient(to bottom, #8dc9f8, #2e6fb9);
+        }
+
+        /* Рабочий стол */
+        .desktop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 40px;
+            padding: 20px;
+        }
+
+        .desktop-icon {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+            cursor: pointer;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            font-size: 12px;
+            text-align: center;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .desktop-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .desktop-icon img {
+            width: 42px;
+            height: 42px;
+            margin-bottom: 6px;
+            object-fit: contain;
+            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
+        }
+
+        /* Меню Пуск */
+        .start-menu {
+            position: fixed;
+            bottom: 40px;
+            left: 4px;
+            width: 500px;
+            background: #f0f0f0;
+            border: 1px solid #a0a0a0;
+            border-radius: 4px;
+            display: none;
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .start-menu-header {
+            height: 50px;
+            background: linear-gradient(to bottom, #1e5fa9, #0c65b3);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-weight: bold;
+            font-size: 14px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .start-menu-content {
+            display: flex;
+            height: 350px;
+        }
+
+        .start-menu-left {
+            width: 60%;
+            padding: 15px;
+            background: linear-gradient(to right, #f8f8f8, #f0f0f0);
+            border-right: 1px solid #d0d0d0;
+        }
+
+        .start-menu-right {
+            width: 40%;
+            padding: 15px;
+            background: linear-gradient(to right, #f0f0f0, #e8e8e8);
+        }
+
+        .start-menu-item {
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-bottom: 4px;
+        }
+
+        .start-menu-item:hover {
+            background: #d0e5f5;
+            color: #0c65b3;
+        }
+
+        .start-menu-item img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .start-menu-footer {
+            height: 40px;
+            background: linear-gradient(to bottom, #f0f0f0, #e8e8e8);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 20px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            border-top: 1px solid #d0d0d0;
+        }
+
+        /* Gadgets */
+        .gadget {
+            position: absolute;
+            width: 150px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 10px;
+        }
+
+        .gadget-header {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .gadget-content {
+            font-size: 24px;
+            text-align: center;
+            color: #0c65b3;
+        }
+
+        /* Кнопка выхода */
+        .exit-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Рабочий стол -->
+    <div class="desktop">
+        <div class="desktop-icon" style="top: 20px; left: 20px;" ondblclick="openWindow('main-window')">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='20' fill='%230c65b3'/><text x='24' y='30' font-family='Arial' font-size='14' fill='white' text-anchor='middle'>PC</text></svg>" alt="Компьютер">
+            <span>Компьютер</span>
+        </div>
+        <div class="desktop-icon" style="top: 100px; left: 20px;" ondblclick="openWindow('main-window')">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='20' fill='%23ff6a00'/><text x='24' y='30' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>Корз</text></svg>" alt="Корзина">
+            <span>Корзина</span>
+        </div>
+        <div class="desktop-icon" style="top: 180px; left: 20px;" ondblclick="openWindow('main-window')">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='20' fill='%231e5fa9'/><text x='24' y='30' font-family='Arial' font-size='10' fill='white' text-anchor='middle'>Sys</text></svg>" alt="SysHelper">
+            <span>SysHelper</span>
+        </div>
+
+        <!-- Гаджеты -->
+        <div class="gadget" style="right: 20px; top: 20px;">
+            <div class="gadget-header">
+                <span>Часы</span>
+                <span>×</span>
+            </div>
+            <div class="gadget-content" id="gadget-clock">00:00</div>
+        </div>
+
+        <div class="gadget" style="right: 20px; top: 180px;">
+            <div class="gadget-header">
+                <span>Календарь</span>
+                <span>×</span>
+            </div>
+            <div class="gadget-content" id="gadget-date">01.01</div>
+        </div>
+    </div>
+
+    <!-- Главное окно -->
+    <div class="window" id="main-window">
+        <div class="title-bar">
+            <span>Windows 7 - SysHelper</span>
+            <div class="window-controls">
+                <div class="window-control minimize" onclick="minimizeWindow('main-window')">_</div>
+                <div class="window-control maximize" onclick="maximizeWindow('main-window')">□</div>
+                <div class="window-control close" onclick="closeWindow('main-window')">×</div>
+            </div>
+        </div>
+        <div class="menu-bar">
+            <span class="menu-item">Файл</span>
+            <span class="menu-item">Правка</span>
+            <span class="menu-item">Вид</span>
+            <span class="menu-item">Сервис</span>
+            <span class="menu-item">Справка</span>
+        </div>
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab(0)">Утилиты</div>
+            <div class="tab" onclick="switchTab(1)">Руководства</div>
+            <div class="tab" onclick="switchTab(2)">Исправления</div>
+            <div class="tab" onclick="switchTab(3)">Ссылки</div>
+        </div>
+        <div class="window-content">
+            <!-- Вкладка Утилиты -->
+            <div class="tab-content active">
+                <h3 style="color: #0c65b3; margin-bottom: 20px;">Полезные утилиты для Windows 7</h3>
+                <div class="icons-grid">
+                    <div class="icon">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='20' fill='%231e5fa9'/><text x='24' y='30' font-family='Arial' font-size='14' fill='white' text-anchor='middle'>CC</text></svg>" alt="CCleaner">
+                        <span>CCleaner</span>
+                    </div>
+                    <div class="icon">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='20' fill='%23246cb0'/><text x='24' y='30' font-family='Arial' font-size='10' fill='white' text-anchor='middle'>Defrag</text></svg>" alt="Defraggler">
+                        <span>Defraggler</span>
+                    </div>
+                    <div class="icon">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='20' fill='%23c75050'/><text x='24' y='30' font-family='Arial' font-size='10' fill='white' text-anchor='middle'>AV</text></svg>" alt="Антивирус">
+                        <span>Антивирус</span>
+                    </div>
+                    <div class="icon">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='20' fill='%2350c750'/><text x='24' y='30' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>7-Z</text></svg>" alt="7-Zip">
+                        <span>7-Zip</span>
+                    </div>
+                    <div class="icon">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='20' fill='%23ff8c00'/><text x='24' y='30' font-family='Arial' font-size='10' fill='white' text-anchor='middle'>Recuva</text></svg>" alt="Recuva">
+                        <span>Recuva</span>
+                    </div>
+                    <div class="icon">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='20' fill='%236a5acd'/><text x='24' y='30' font-family='Arial' font-size='10' fill='white' text-anchor='middle'>Speccy</text></svg>" alt="Speccy">
+                        <span>Speccy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка Руководства -->
+            <div class="tab-content">
+                <h3 style="color: #0c65b3; margin-bottom: 20px;">Руководства по Windows 7</h3>
+                <ul class="link-list">
+                    <li><a onclick="alert('Загрузка руководства по установке...')">Установка Windows 7</a></li>
+                    <li><a onclick="alert('Загрузка руководства по настройке сети...')">Настройка сети и общего доступа</a></li>
+                    <li><a onclick="alert('Загрузка руководства по оптимизации...')">Оптимизация производительности</a></li>
+                    <li><a onclick="alert('Загрузка руководства по резервному копированию...')">Резервное копирование и восстановление</a></li>
+                    <li><a onclick="alert('Загрузка руководства по безопасности...')">Безопасность и брандмауэр</a></li>
+                    <li><a onclick="alert('Загрузка руководства по обновлению...')">Обновление до Windows 10</a></li>
+                </ul>
+            </div>
+
+            <!-- Вкладка Исправления -->
+            <div class="tab-content">
+                <h3 style="color: #0c65b3; margin-bottom: 20px;">Исправление распространенных проблем</h3>
+                <ul class="link-list">
+                    <li><a onclick="showFix('Черный экран')">Черный экран при загрузке</a></li>
+                    <li><a onclick="showFix('Медленная работа')">Медленная работа системы</a></li>
+                    <li><a onclick="showFix('Сетевые проблемы')">Проблемы с сетью и интернетом</a></li>
+                    <li><a onclick="showFix('Драйверы')">Отсутствующие или проблемные драйверы</a></li>
+                    <li><a onclick="showFix('Загрузка')">Ошибки загрузки и синий экран</a></li>
+                    <li><a onclick="showFix('Обновления')">Проблемы с установкой обновлений</a></li>
+                </ul>
+                <div id="fix-content" style="margin-top: 20px; padding: 15px; background: #f8f8f8; border: 1px solid #d0d0d0; border-radius: 5px; display: none;">
+                    <h4 style="color: #0c65b3;">Решение проблемы:</h4>
+                    <p id="fix-text" style="margin-top: 10px; line-height: 1.5;"></p>
+                </div>
+            </div>
+
+            <!-- Вкладка Ссылки -->
+            <div class="tab-content">
+                <h3 style="color: #0c65b3; margin-bottom: 20px;">Полезные ссылки и ресурсы</h3>
+                <ul class="link-list">
+                    <li><a href="https://support.microsoft.com/ru-ru" target="_blank">Официальная поддержка Microsoft</a></li>
+                    <li><a href="https://www.driverscloud.com/ru" target="_blank">Поиск и установка драйверов</a></li>
+                    <li><a href="https://answers.microsoft.com/ru-ru" target="_blank">Сообщество Microsoft Answers</a></li>
+                    <li><a href="https://www.sevenforums.com/" target="_blank">Seven Forums (англ.)</a></li>
+                    <li><a href="https://archive.org/details/softwarelibrary_win7" target="_blank">Архив программ для Windows 7</a></li>
+                </ul>
+                <div class="exit-button">
+                    <button class="win7-button primary" onclick="exitToMain()">Выход на главную страницу</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Панель задач -->
+    <div class="taskbar">
+        <div class="start-button" onclick="toggleStartMenu()">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'><circle cx='9' cy='9' r='8' fill='white'/><text x='9' y='13' font-family='Arial' font-size='10' fill='%23439643' text-anchor='middle'>Win</text></svg>" alt="Пуск">
+            Пуск
+        </div>
+        <div class="taskbar-items">
+            <div class="taskbar-item active" id="taskbar-main" onclick="focusWindow('main-window')">
+                Windows 7 - SysHelper
+            </div>
+        </div>
+        <div class="system-tray">
+            <div class="tray-icon">⇅</div>
+            <div class="tray-icon">☀</div>
+            <div class="tray-icon">🔊</div>
+        </div>
+        <div class="clock" id="clock">00:00:00</div>
+        <div class="show-desktop" onclick="showDesktop()"></div>
+    </div>
+
+    <!-- Меню Пуск -->
+    <div class="start-menu" id="start-menu">
+        <div class="start-menu-header">UncleDeniy</div>
+        <div class="start-menu-content">
+            <div class="start-menu-left">
+                <div class="start-menu-item" onclick="openWindow('main-window')">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%231e5fa9'/></svg>" alt="">
+                    SysHelper
+                </div>
+                <div class="start-menu-item" onclick="openProgram('Internet Explorer')">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%230c65b3'/></svg>" alt="">
+                    Internet Explorer
+                </div>
+                <div class="start-menu-item" onclick="openProgram('Проводник')">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%23ff8c00'/></svg>" alt="">
+                    Проводник
+                </div>
+                <div class="start-menu-item" onclick="openProgram('Панель управления')">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%236a5acd'/></svg>" alt="">
+                    Панель управления
+                </div>
+                <div class="start-menu-item" onclick="openProgram('Калькулятор')">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%2350c750'/></svg>" alt="">
+                    Калькулятор
+                </div>
+            </div>
+            <div class="start-menu-right">
+                <div class="start-menu-item" onclick="openProgram('Документы')">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%231e5fa9'/></svg>" alt="">
+                    Документы
+                </div>
+                <div class="start-menu-item" onclick="openProgram('Изображения')">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%23c75050'/></svg>" alt="">
+                    Изображения
+                </div>
+                <div class="start-menu-item" onclick="openProgram('Музыка')">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%2350c750'/></svg>" alt="">
+                    Музыка
+                </div>
+                <div class="start-menu-item" onclick="openProgram('Игры')">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%23ff8c00'/></svg>" alt="">
+                    Игры
+                </div>
+                <div class="start-menu-item" onclick="openProgram('Поиск')">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%236a5acd'/></svg>" alt="">
+                    Поиск
+                </div>
+            </div>
+        </div>
+        <div class="start-menu-footer">
+            <button class="win7-button" onclick="exitToMain()">Выход</button>
+        </div>
+    </div>
+
+    <script>
+        // Переключение вкладок
+        function switchTab(index) {
+            document.querySelectorAll('.tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.tab-content').forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+        }
+
+        // Показать исправление
+        function showFix(problem) {
+            const fixContent = document.getElementById('fix-content');
+            const fixText = document.getElementById('fix-text');
+            
+            const fixes = {
+                'Черный экран': '1. Проверьте подключение монитора\n2. Перезагрузите компьютер\n3. Запустите восстановление системы\n4. Проверьте видеодрайверы\n5. Восстановите системные файлы (sfc /scannow)',
+                'Медленная работа': '1. Очистите диск от временных файлов\n2. Дефрагментируйте жесткий диск\n3. Отключите ненужные службы и автозагрузку\n4. Увеличьте объем виртуальной памяти\n5. Проверьте на наличие вирусов',
+                'Сетевые проблемы': '1. Перезагрузите маршрутизатор\n2. Проверьте настройки брандмауэра\n3. Обновите сетевые драйверы\n4. Сбросьте TCP/IP стек (netsh int ip reset)\n5. Запустите диагностику сети',
+                'Драйверы': '1. Используйте Центр обновления Windows\n2. Загрузите драйверы с сайта производителя\n3. Используйте DriverPack Solution\n4. Обновите через Диспетчер устройств',
+                'Загрузка': '1. Используйте Last Known Good Configuration\n2. Запустите восстановление при загрузке\n3. Проверьте диск на ошибки (chkdsk)\n4. Используйте установочный диск для восстановления',
+                'Обновления': '1. Запустите устранение неполадок с обновлениями\n2. Очистите кэш обновлений\n3. Проверьте связанные службы\n4. Установите обновления вручную'
+            };
+            
+            fixText.textContent = fixes[problem] || 'Решение не найдено';
+            fixContent.style.display = 'block';
+        }
+
+        // Часы
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ru-RU');
+            const shortTimeStr = now.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+            const dateStr = now.toLocaleDateString('ru-RU', {day: '2-digit', month: '2-digit'});
+            
+            document.getElementById('clock').textContent = timeStr;
+            document.getElementById('gadget-clock').textContent = shortTimeStr;
+            document.getElementById('gadget-date').textContent = dateStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Меню Пуск
+        function toggleStartMenu() {
+            const menu = document.getElementById('start-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function openProgram(name) {
+            alert('Запуск программы: ' + name);
+            document.getElementById('start-menu').style.display = 'none';
+        }
+
+        // Закрыть меню при клике вне его
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.start-menu') && !e.target.closest('.start-button')) {
+                document.getElementById('start-menu').style.display = 'none';
+            }
+        });
+
+        // Управление окнами
+        function openWindow(id) {
+            const window = document.getElementById(id);
+            window.style.display = 'flex';
+            window.style.zIndex = getHighestZIndex() + 1;
+            focusWindow(id);
+        }
+
+        function closeWindow(id) {
+            document.getElementById(id).style.display = 'none';
+            document.getElementById('taskbar-' + id).style.display = 'none';
+        }
+
+        function minimizeWindow(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function maximizeWindow(id) {
+            const window = document.getElementById(id);
+            if (window.style.width === '100%') {
+                window.style.width = '700px';
+                window.style.height = '450px';
+                window.style.top = '100px';
+                window.style.left = '200px';
+            } else {
+                window.style.width = '100%';
+                window.style.height = 'calc(100% - 40px)';
+                window.style.top = '0';
+                window.style.left = '0';
+            }
+        }
+
+        function focusWindow(id) {
+            document.getElementById(id).style.zIndex = getHighestZIndex() + 1;
+            document.querySelectorAll('.taskbar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.getElementById('taskbar-' + id).classList.add('active');
+        }
+
+        function getHighestZIndex() {
+            return Array.from(document.querySelectorAll('*'))
+                .map(el => parseFloat(getComputedStyle(el).zIndex))
+                .filter(zIndex => !isNaN(zIndex))
+                .reduce((max, zIndex) => Math.max(max, zIndex), 0);
+        }
+
+        // Перетаскивание окон
+        let activeWindow = null;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        document.querySelectorAll('.title-bar').forEach(titleBar => {
+            titleBar.addEventListener('mousedown', function(e) {
+                activeWindow = this.parentElement;
+                offsetX = e.clientX - activeWindow.getBoundingClientRect().left;
+                offsetY = e.clientY - activeWindow.getBoundingClientRect().top;
+                activeWindow.style.zIndex = getHighestZIndex() + 1;
+                focusWindow(activeWindow.id);
+            });
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (activeWindow) {
+                activeWindow.style.left = (e.clientX - offsetX) + 'px';
+                activeWindow.style.top = (e.clientY - offsetY) + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            activeWindow = null;
+        });
+
+        // Показать рабочий стол
+        function showDesktop() {
+            document.querySelectorAll('.window').forEach(window => {
+                window.style.display = 'none';
+            });
+        }
+
+        // Кнопка выхода
+        function exitToMain() {
+            if (confirm('Вернуться на главную страницу?')) {
+                window.location.href = '/'; // Замените на нужный URL
+            }
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            // Добавляем обработчики для всех окон
+            document.querySelectorAll('.window').forEach(window => {
+                window.addEventListener('mousedown', function() {
+                    this.style.zIndex = getHighestZIndex() + 1;
+                    focusWindow(this.id);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

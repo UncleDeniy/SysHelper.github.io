@@ -50,7 +50,6 @@
             padding: 0 1.5rem;
         }
 
-      
         header {
             background-color: var(--header-bg);
             border-bottom: 1px solid var(--border);
@@ -340,6 +339,71 @@
             text-decoration: underline;
         }
 
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .contrib-section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .contrib-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            background: linear-gradient(90deg, var(--accent), #8e44ad);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
         @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
@@ -365,6 +429,11 @@
             
             .os-grid, .features-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 0.8rem;
             }
         }
 
@@ -393,6 +462,16 @@
             border-radius: 20px;
             font-weight: 600;
         }
+
+        .wip-badge {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -405,8 +484,9 @@
             
             <div class="nav">
                 <a href="#" class="nav-link">Главная</a>
-                <a href="#" class="nav-link">О проекте</a>
-                <a href="#" class="nav-link">Помощь</a>
+                <a href="#about" class="nav-link">О проекте</a>
+                <a href="#os" class="nav-link">Помощь</a>
+                <a href="#community" class="nav-link">Сообщество</a>
             </div>
             
             <div class="controls">
@@ -421,16 +501,19 @@
     <main>
         <section class="hero">
             <div class="container">
-                <h1 class="hero-title animate">Помощь с операционными системами</h1>
+                <h1 class="hero-title animate">🚀 SysHelper - помощь с операционными системами</h1>
                 <p class="hero-description animate delay-1">
-                    Находите решения проблем, полезные руководства и советы по настройке для Linux, macOS, Windows и серверных систем. Профессиональная помощь сообществу.
+                    ✨ Помощь с Linux, macOS, Windows и серверными системами ✨
                 </p>
+                
+                <div class="badges">
+                    <span class="badge"><i class="fas fa-star"></i> GitHub Stars</span>
+                    <span class="badge"><i class="fas fa-code-branch"></i> MIT License</span>
+                    <span class="badge"><i class="fas fa-globe"></i> GitHub Pages</span>
+                </div>
+                
                 <div class="hero-cta">
-                    <a href="#os" class="btn btn-primary animate delay-2">
-                        <i class="fas fa-hands-helping"></i>
-                        Получить помощь
-                    </a>
-                    <a href="https://github.com/UncleDeniy/SysHelper.github.io/tree/main" class="btn btn-secondary animate delay-3">
+                    <a href="https://github.com/UncleDeniy/SysHelper.github.io" class="btn btn-secondary animate delay-3">
                         <i class="fab fa-github"></i>
                         GitHub проекта
                     </a>
@@ -438,56 +521,113 @@
             </div>
         </section>
 
+        <section class="section" id="about">
+            <div class="container">
+                <h2 class="section-title">📖 О проекте</h2>
+                <p class="hero-description">
+                    <strong>SysHelper</strong> — это современный веб-ресурс, созданный для предоставления помощи с операционными системами. Мы предлагаем проверенные решения, подробные руководства и оперативную поддержку сообщества.
+                </p>
+                
+                <h3 class="section-title">🌟 Ключевые особенности</h3>
+                <div class="features-grid">
+                    <div class="feature-card animate">
+                        <div class="feature-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3>Практические решения</h3>
+                        <p>Готовые рецепты для распространенных проблем с операционными системами.</p>
+                    </div>
+                    
+                    <div class="feature-card animate delay-1">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Быстрая навигация</h3>
+                        <p>Интуитивно понятная структура разделов для быстрого поиска решений.</p>
+                    </div>
+                    
+                    <div class="feature-card animate delay-2">
+                        <div class="feature-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h3>Современный дизайн</h3>
+                        <p>Адаптивный интерфейс с поддержкой темной и светлой темы.</p>
+                    </div>
+                    
+                    <div class="feature-card animate delay-3">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Полная адаптивность</h3>
+                        <p>Оптимизирован для всех устройств - от мобильных до десктопов.</p>
+                    </div>
+                    
+                    <div class="feature-card animate delay-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Поиск решений</h3>
+                        <p>Мощный поиск для быстрого нахождения нужной информации.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="section" id="os">
             <div class="container">
-                <h2 class="section-title">Выберите операционную систему для получения помощи</h2>
+                <h2 class="section-title">📚 Разделы помощи</h2>
+                <p class="hero-description">
+                    Выберите операционную систему для получения помощи и полезных руководств
+                </p>
                 <div class="os-grid">
                     <a href="os/linux/linux.html" class="os-card animate delay-1">
-                        <span class="card-badge">Популярно</span>
+                        <span class="card-badge">WIP</span>
                         <div class="os-icon">
                             <i class="fab fa-linux"></i>
                         </div>
                         <h3>Linux</h3>
-                        <p>Решение проблем, настройка дистрибутивов, работа с командной строкой и администрирование систем на базе Linux.</p>
-                        <span class="btn btn-secondary">Получить помощь</span>
+                        <p>Дистрибутивы, терминал, администрирование и решение проблем в Linux системах.</p>
+                        <span class="btn btn-secondary">Изучить</span>
                     </a>
                     
                     <a href="os/macos/macos.html" class="os-card animate delay-2">
+                        <span class="card-badge">WIP</span>
                         <div class="os-icon">
                             <i class="fab fa-apple"></i>
                         </div>
                         <h3>macOS</h3>
-                        <p>Помощь с настройкой macOS, решение проблем совместимости, работа с терминалом и оптимизация производительности.</p>
-                        <span class="btn btn-secondary">Получить помощь</span>
+                        <p>Настройка, терминал, проблемы совместимости и оптимизация macOS.</p>
+                        <span class="btn btn-secondary">Изучить</span>
                     </a>
                     
                     <a href="os/windows/windows.html" class="os-card animate delay-3">
-                        <span class="card-badge">Актуально</span>
+                        <span class="card-badge">WIP</span>
                         <div class="os-icon">
                             <i class="fab fa-windows"></i>
                         </div>
                         <h3>Windows</h3>
-                        <p>Решение системных ошибок, оптимизация работы, настройка PowerShell и устранение проблем с производительностью.</p>
-                        <span class="btn btn-secondary">Получить помощь</span>
+                        <p>Оптимизация, PowerShell, решение ошибок и настройка Windows систем.</p>
+                        <span class="btn btn-secondary">Изучить</span>
                     </a>
                     
                     <a href="os/windows-server/windows-server.html" class="os-card animate delay-4">
+                        <span class="card-badge">WIP</span>
                         <div class="os-icon">
                             <i class="fas fa-server"></i>
                         </div>
                         <h3>Windows Server</h3>
-                        <p>Администрирование, развертывание серверов, настройка ролей и служб в Windows Server.</p>
-                        <span class="btn btn-secondary">Получить помощь</span>
+                        <p>Роли, службы, администрирование и развертывание серверов на Windows.</p>
+                        <span class="btn btn-secondary">Изучить</span>
                     </a>
                     
                     <a href="os/linux-server/linux-server.html" class="os-card animate delay-4">
-                        <span class="card-badge">Новое</span>
+                        <span class="card-badge">WIP</span>
                         <div class="os-icon">
                             <i class="fas fa-server"></i>
                         </div>
                         <h3>Linux Server</h3>
-                        <p>Настройка серверов на Linux, администрирование, безопасность и развертывание веб-сервисов.</p>
-                        <span class="btn btn-secondary">Получить помощь</span>
+                        <p>Веб-серверы, безопасность, развертывание и администрирование Linux серверов.</p>
+                        <span class="btn btn-secondary">Изучить</span>
                     </a>
                 </div>
             </div>
@@ -495,31 +635,116 @@
 
         <section class="section">
             <div class="container">
-                <h2 class="section-title">Наши преимущества</h2>
+                <h2 class="section-title">🎨 Особенности дизайна</h2>
                 <div class="features-grid">
                     <div class="feature-card animate">
                         <div class="feature-icon">
-                            <i class="fas fa-clock"></i>
+                            <i class="fas fa-moon"></i>
                         </div>
-                        <h3>Быстрая помощь</h3>
-                        <p>Оперативные решения ваших проблем с операционными системами от опытных специалистов.</p>
+                        <h3>Темная/светлая тема</h3>
+                        <p>Удобство для работы в любое время суток с автоматическим определением системных предпочтений.</p>
                     </div>
                     
                     <div class="feature-card animate delay-1">
                         <div class="feature-icon">
-                            <i class="fas fa-check-circle"></i>
+                            <i class="fas fa-paint-brush"></i>
                         </div>
-                        <h3>Проверенные решения</h3>
-                        <p>Все руководства и решения тщательно проверяются на актуальность и эффективность.</p>
+                        <h3>Плавные анимации</h3>
+                        <p>Анимированные hover-эффекты и плавные переходы для улучшения пользовательского опыта.</p>
                     </div>
                     
                     <div class="feature-card animate delay-2">
                         <div class="feature-icon">
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-touch"></i>
                         </div>
-                        <h3>Сообщество экспертов</h3>
-                        <p>Получайте помощь от сообщества профессионалов с многолетним опытом работы с различными ОС.</p>
+                        <h3>Тач-дружественный</h3>
+                        <p>Полная оптимизация для мобильных устройств и сенсорных экранов.</p>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="tech">
+            <div class="container">
+                <h2 class="section-title">🛠 Технологический стек</h2>
+                <div class="tech-stack">
+                    <div class="tech-item">
+                        <i class="fab fa-html5"></i>
+                        <span>HTML5</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-css3-alt"></i>
+                        <span>CSS3</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-js"></i>
+                        <span>JavaScript</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-font-awesome"></i>
+                        <span>Font Awesome</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub Pages</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="community">
+            <div class="container">
+                <h2 class="section-title">🤝 Сообщество</h2>
+                <p class="hero-description">
+                    Мы приветствуем вклад в развитие проекта! Вот как вы можете помочь:
+                </p>
+                
+                <div class="contrib-section">
+                    <div class="contrib-step">
+                        <div class="step-number">1</div>
+                        <div>
+                            <h3>Сообщить о проблеме</h3>
+                            <p>Откройте Issue на GitHub, опишите проблему или предложение по улучшению.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contrib-step">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h3>Предложить правки</h3>
+                            <p>Сделайте fork репозитория, создайте feature branch и откройте Pull Request.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contrib-step">
+                        <div class="step-number">3</div>
+                        <div>
+                            <h3>Добавить контент</h3>
+                            <p>Новые руководства, исправления ошибок, переводы или улучшения дизайна.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="https://github.com/UncleDeniy/SysHelper.github.io/issues" class="btn btn-primary">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Сообщить о проблеме
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">📝 Лицензия</h2>
+                <p class="hero-description">
+                    Этот проект распространяется под лицензией MIT. Подробнее см. в файле LICENSE.
+                </p>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="https://github.com/UncleDeniy/SysHelper.github.io/blob/main/LICENSE" class="btn btn-secondary">
+                        <i class="fas fa-file-alt"></i>
+                        Посмотреть лицензию
+                    </a>
                 </div>
             </div>
         </section>
@@ -529,18 +754,25 @@
         <div class="container">
             <div class="footer-links">
                 <a href="#" class="footer-link">Главная</a>
-                <a href="#" class="footer-link">О проекте</a>
-                <a href="#" class="footer-link">Помощь</a>
-                <a href="https://github.com/UncleDeniy/SysHelper.github.io/tree/main" class="footer-link">GitHub</a>
-                <a href="#" class="footer-link">Контакты</a>
+                <a href="#about" class="footer-link">О проекте</a>
+                <a href="#os" class="footer-link">Помощь</a>
+                <a href="#community" class="footer-link">Сообщество</a>
+                <a href="https://github.com/UncleDeniy/SysHelper.github.io" class="footer-link">GitHub</a>
             </div>
-            <p>© 2025 SysHelper. Проект помощи с операционными системами.</p>
+            
+            <div class="footer-links">
+                <a href="https://github.com/UncleDeniy" class="footer-link">
+                    <i class="fas fa-user"></i> Автор: UncleDeniy
+                </a>
+            </div>
+            
+            <p>© 2025 SysHelper. Проект помощи с операционными системами. Распространяется под лицензией MIT.</p>
+            
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-           
             const themeToggle = document.getElementById('theme-toggle');
             const themeIcon = themeToggle.querySelector('i');
             const themeText = themeToggle.querySelector('span');

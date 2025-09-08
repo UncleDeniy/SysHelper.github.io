@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Vista - SysHelper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #005eb8, #0078d7);
+            color: #000;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Панель задач Vista */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            z-index: 1000;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .start-button {
+            background: linear-gradient(to bottom, #6ea0e7, #4a82dc);
+            border: 1px solid #2c5bb4;
+            border-radius: 3px;
+            padding: 5px 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 30px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .start-button:hover {
+            background: linear-gradient(to bottom, #7eb0f7, #5a92ec);
+        }
+
+        .start-button img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .taskbar-items {
+            display: flex;
+            gap: 4px;
+            margin-left: 10px;
+            flex-grow: 1;
+        }
+
+        .taskbar-item {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            padding: 4px 12px;
+            color: white;
+            font-size: 11px;
+            cursor: pointer;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(5px);
+        }
+
+        .taskbar-item.active {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .system-tray {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tray-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+        }
+
+        .clock {
+            color: white;
+            font-size: 11px;
+            padding: 0 10px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 3px;
+        }
+
+        /* Окно Vista */
+        .window {
+            position: absolute;
+            top: 80px;
+            left: 150px;
+            width: 700px;
+            height: 450px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 6px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.2) inset;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            resize: both;
+            overflow: auto;
+            min-width: 350px;
+            min-height: 250px;
+            backdrop-filter: blur(5px);
+        }
+
+        .title-bar {
+            height: 30px;
+            background: linear-gradient(to bottom, #6db1e6, #4a8ad9);
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            cursor: move;
+            border-radius: 6px 6px 0 0;
+            border-bottom: 1px solid #3a7ac9;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-control {
+            width: 22px;
+            height: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .window-control:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .window-control.close:hover {
+            background: #e53935;
+        }
+
+        .menu-bar {
+            height: 28px;
+            background: linear-gradient(to bottom, #f6f6f6, #eaeaea);
+            border-bottom: 1px solid #d0d0d0;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 12px;
+            gap: 16px;
+        }
+
+        .menu-item {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 3px;
+        }
+
+        .menu-item:hover {
+            background: #dde5f9;
+        }
+
+        .window-content {
+            flex: 1;
+            padding: 12px;
+            overflow: auto;
+            background: #ffffff;
+            border-radius: 0 0 6px 6px;
+        }
+
+        /* Вкладки Vista */
+        .tabs {
+            display: flex;
+            background: linear-gradient(to bottom, #f6f6f6, #eaeaea);
+            border-bottom: 1px solid #d0d0d0;
+            padding: 0 12px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            background: linear-gradient(to bottom, #f0f0f0, #e5e5e5);
+            border: 1px solid #d0d0d0;
+            border-bottom: none;
+            margin-right: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .tab.active {
+            background: linear-gradient(to bottom, #ffffff, #f5f5f5);
+            border-bottom: 1px solid #ffffff;
+            margin-bottom: -1px;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Иконки Vista */
+        .icons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            text-align: center;
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+
+        .icon:hover {
+            transform: translateY(-3px);
+        }
+
+        .icon img {
+            width: 42px;
+            height: 42px;
+            margin-bottom: 6px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Списки */
+        .link-list {
+            list-style: none;
+        }
+
+        .link-list li {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .link-list li:hover {
+            background: #f0f5ff;
+        }
+
+        .link-list a {
+            color: #0066cc;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 13px;
+            display: block;
+        }
+
+        .link-list a:hover {
+            color: #004d99;
+            text-decoration: underline;
+        }
+
+        /* Кнопки Vista */
+        .vista-button {
+            background: linear-gradient(to bottom, #7cb9f2, #4a8ad9);
+            border: 1px solid #3a7ac9;
+            border-radius: 4px;
+            padding: 6px 16px;
+            font-size: 12px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .vista-button:hover {
+            background: linear-gradient(to bottom, #8cc9ff, #5a9ae9);
+        }
+
+        /* Рабочий стол */
+        .desktop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 40px;
+            padding: 20px;
+        }
+
+        .desktop-icon {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90px;
+            cursor: pointer;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            font-size: 12px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .desktop-icon:hover {
+            transform: translateY(-3px);
+        }
+
+        .desktop-icon img {
+            width: 42px;
+            height: 42px;
+            margin-bottom: 6px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+        }
+
+        /* Sidebar Vista */
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 40px;
+            width: 300px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .gadget {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 6px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .gadget h3 {
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: #0066cc;
+        }
+
+        /* Меню Пуск Vista */
+        .start-menu {
+            position: fixed;
+            bottom: 40px;
+            left: 10px;
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 6px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .start-menu-header {
+            height: 50px;
+            background: linear-gradient(to right, #4a8ad9, #6db1e6);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .start-menu-items {
+            padding: 10px 0;
+        }
+
+        .start-menu-item {
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .start-menu-item:hover {
+            background: #dde5f9;
+        }
+
+        .start-menu-item img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Кнопка выхода */
+        .exit-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+        }
+
+        .glow-effect {
+            animation: glow 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Рабочий стол -->
+    <div class="desktop">
+        <div class="desktop-icon" style="top: 20px; left: 20px;" ondblclick="openWindow('main-window')">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><circle cx='21' cy='21' r='20' fill='%230066cc'/><text x='21' y='26' font-family='Arial' font-size='14' fill='white' text-anchor='middle'>ПК</text></svg>" alt="Компьютер">
+            <span>Компьютер</span>
+        </div>
+        <div class="desktop-icon" style="top: 90px; left: 20px;" ondblclick="openWindow('main-window')">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><circle cx='21' cy='21' r='20' fill='%23ff6a00'/><text x='21' y='26' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>Корз</text></svg>" alt="Корзина">
+            <span>Корзина</span>
+        </div>
+        <div class="desktop-icon" style="top: 160px; left: 20px;" ondblclick="openWindow('main-window')">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><circle cx='21' cy='21' r='20' fill='%230066cc'/><text x='21' y='26' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>Sys</text></svg>" alt="SysHelper">
+            <span>SysHelper</span>
+        </div>
+    </div>
+
+    <!-- Sidebar Vista -->
+    <div class="sidebar">
+        <div class="gadget">
+            <h3>Центр производительности</h3>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(to bottom, #4a8ad9, #6db1e6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">5.2</div>
+                <div style="font-size: 12px;">Индекс производительности<br>Базовая оценка: 5.2</div>
+            </div>
+        </div>
+        
+        <div class="gadget">
+            <h3>Часы</h3>
+            <div id="sidebar-clock" style="font-size: 24px; font-weight: bold; text-align: center;">00:00:00</div>
+            <div id="sidebar-date" style="font-size: 14px; text-align: center;">1 января 2023</div>
+        </div>
+        
+        <div class="gadget">
+            <h3>Быстрый запуск</h3>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button class="vista-button" onclick="openWindow('main-window')">SysHelper</button>
+                <button class="vista-button" onclick="exitToMain()">Выход</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Главное окно -->
+    <div class="window" id="main-window">
+        <div class="title-bar">
+            <span>Windows Vista - SysHelper</span>
+            <div class="window-controls">
+                <div class="window-control minimize" onclick="minimizeWindow('main-window')">_</div>
+                <div class="window-control maximize" onclick="maximizeWindow('main-window')">□</div>
+                <div class="window-control close" onclick="closeWindow('main-window')">×</div>
+            </div>
+        </div>
+        <div class="menu-bar">
+            <span class="menu-item">Файл</span>
+            <span class="menu-item">Правка</span>
+            <span class="menu-item">Вид</span>
+            <span class="menu-item">Сервис</span>
+            <span class="menu-item">Справка</span>
+        </div>
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab(0)">Утилиты</div>
+            <div class="tab" onclick="switchTab(1)">Руководства</div>
+            <div class="tab" onclick="switchTab(2)">Исправления</div>
+            <div class="tab" onclick="switchTab(3)">Ссылки</div>
+        </div>
+        <div class="window-content">
+            <!-- Вкладка Утилиты -->
+            <div class="tab-content active">
+                <h3 style="color: #0066cc; margin-bottom: 15px;">Полезные утилиты для Windows Vista</h3>
+                <div class="icons-grid">
+                    <div class="icon">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><circle cx='21' cy='21' r='20' fill='%23316ac5'/><text x='21' y='26' font-family='Arial' font-size='14' fill='white' text-anchor='middle'>CC</text></svg>" alt="CCleaner">
+                        <span>CCleaner</span>
+                    </div>
+                    <div class="icon">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><rect width='42' height='42' rx='10' fill='%23366cb0'/><text x='21' y='26' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>Defrag</text></svg>" alt="Defraggler">
+                        <span>Defraggler</span>
+                    </div>
+                    <div class="icon">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><rect width='42' height='42' rx='10' fill='%23c75050'/><text x='21' y='26' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>AV</text></svg>" alt="Антивирус">
+                        <span>Антивирус</span>
+                    </div>
+                    <div class="icon">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><rect width='42' height='42' rx='10' fill='%2350c750'/><text x='21' y='26' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>7-Zip</text></svg>" alt="7-Zip">
+                        <span>7-Zip</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка Руководства -->
+            <div class="tab-content">
+                <h3 style="color: #0066cc; margin-bottom: 15px;">Руководства по Windows Vista</h3>
+                <ul class="link-list">
+                    <li><a onclick="alert('Загрузка руководства по установке...')">Установка Windows Vista</a></li>
+                    <li><a onclick="alert('Загрузка руководства по настройке сети...')">Настройка сети</a></li>
+                    <li><a onclick="alert('Загрузка руководства по оптимизации...')">Оптимизация производительности</a></li>
+                    <li><a onclick="alert('Загрузка руководства по резервному копированию...')">Резервное копирование</a></li>
+                    <li><a onclick="alert('Загрузка руководства по восстановлению...')">Восстановление системы</a></li>
+                </ul>
+            </div>
+
+            <!-- Вкладка Исправления -->
+            <div class="tab-content">
+                <h3 style="color: #0066cc; margin-bottom: 15px;">Исправление распространенных проблем</h3>
+                <ul class="link-list">
+                    <li><a onclick="showFix('Синий экран')">Синий экран смерти (BSOD)</a></li>
+                    <li><a onclick="showFix('Медленная работа')">Медленная работа системы</a></li>
+                    <li><a onclick="showFix('Сетевые проблемы')">Проблемы с сетью</a></li>
+                    <li><a onclick="showFix('Драйверы')">Отсутствующие драйверы</a></li>
+                    <li><a onclick="showFix('Загрузка')">Проблемы с загрузкой</a></li>
+                </ul>
+                <div id="fix-content" style="margin-top: 20px; padding: 15px; background: #f8f8f8; border-radius: 5px; border: 1px solid #e0e0e0; display: none;">
+                    <h4 style="color: #0066cc;">Решение проблемы:</h4>
+                    <p id="fix-text" style="margin-top: 10px; white-space: pre-line;"></p>
+                </div>
+            </div>
+
+            <!-- Вкладка Ссылки -->
+            <div class="tab-content">
+                <h3 style="color: #0066cc; margin-bottom: 15px;">Полезные ссылки</h3>
+                <ul class="link-list">
+                    <li><a href="https://support.microsoft.com/ru-ru" target="_blank">Официальная поддержка Microsoft</a></li>
+                    <li><a href="https://www.driverscloud.com/ru" target="_blank">Поиск драйверов</a></li>
+                    <li><a href="https://community.spiceworks.com/windows_vista" target="_blank">Сообщество Windows Vista</a></li>
+                    <li><a href="https://archive.org/details/winvista_livecd" target="_blank">Архив утилит Windows Vista</a></li>
+                    <li><a href="https://www.majorgeeks.com/" target="_blank">MajorGeeks - Софт</a></li>
+                </ul>
+                <div class="exit-button">
+                    <button class="vista-button glow-effect" onclick="exitToMain()">Выход</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Панель задач -->
+    <div class="taskbar">
+        <div class="start-button" onclick="toggleStartMenu()">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'><circle cx='9' cy='9' r='8' fill='%234a8ad9'/><text x='9' y='12' font-family='Arial' font-size='10' fill='white' text-anchor='middle'>Start</text></svg>" alt="Пуск">
+            Пуск
+        </div>
+        <div class="taskbar-items">
+            <div class="taskbar-item active" id="taskbar-main" onclick="focusWindow('main-window')">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%234a8ad9'/><text x='8' y='11' font-family='Arial' font-size='8' fill='white' text-anchor='middle'>S</text></svg>" alt="SysHelper">
+                Windows Vista - SysHelper
+            </div>
+        </div>
+        <div class="system-tray">
+            <div class="tray-icon">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%23ffffff'/><text x='8' y='12' font-family='Arial' font-size='10' fill='%230066cc' text-anchor='middle'>W</text></svg>" alt="Wi-Fi">
+            </div>
+            <div class="tray-icon">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%23ffffff'/><text x='8' y='12' font-family='Arial' font-size='10' fill='%230066cc' text-anchor='middle'>V</text></svg>" alt="Volume">
+            </div>
+            <div class="clock" id="clock">00:00:00</div>
+        </div>
+    </div>
+
+    <!-- Меню Пуск -->
+    <div class="start-menu" id="start-menu">
+        <div class="start-menu-header">Windows Vista</div>
+        <div class="start-menu-items">
+            <div class="start-menu-item" onclick="openWindow('main-window')">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%234a8ad9'/></svg>" alt="">
+                SysHelper
+            </div>
+            <div class="start-menu-item" onclick="openProgram('Internet Explorer')">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%230066cc'/></svg>" alt="">
+                Internet Explorer
+            </div>
+            <div class="start-menu-item" onclick="openProgram('Проводник')">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%23ff6a00'/></svg>" alt="">
+                Проводник
+            </div>
+            <div class="start-menu-item" onclick="exitToMain()">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%23c75050'/></svg>" alt="">
+                Выход
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Переключение вкладок
+        function switchTab(index) {
+            document.querySelectorAll('.tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.tab-content').forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+        }
+
+        // Показать исправление
+        function showFix(problem) {
+            const fixContent = document.getElementById('fix-content');
+            const fixText = document.getElementById('fix-text');
+            
+            const fixes = {
+                'Синий экран': '1. Проверьте оперативную память memtest86+\n2. Обновите драйверы\n3. Проверьте жесткий диск на ошибки\n4. Восстановите системные файлы (sfc /scannow)',
+                'Медленная работа': '1. Очистите временные файлы\n2. Дефрагментируйте жесткий диск\n3. Отключите ненужные службы\n4. Увеличьте файл подкачки',
+                'Сетевые проблемы': '1. Переустановите сетевые драйверы\n2. Проверьте настройки брандмауэра\n3. Сбросьте TCP/IP стек (netsh int ip reset)\n4. Проверьте кабель и оборудование',
+                'Драйверы': '1. Используйте DriverPack Solution\n2. Проверьте на сайте производителя\n3. Используйте Snappy Driver Installer\n4. Обновите через Диспетчер устройств',
+                'Загрузка': '1. Используйте Last Known Good Configuration\n2. Восстановите через консоль восстановления\n3. Проверьте boot.ini файл\n4. Используйте установочный диск для восстановления'
+            };
+            
+            fixText.textContent = fixes[problem] || 'Решение не найдено';
+            fixContent.style.display = 'block';
+        }
+
+        // Часы
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ru-RU');
+            const dateStr = now.toLocaleDateString('ru-RU', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            document.getElementById('clock').textContent = timeStr;
+            document.getElementById('sidebar-clock').textContent = timeStr;
+            document.getElementById('sidebar-date').textContent = dateStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Меню Пуск
+        function toggleStartMenu() {
+            const menu = document.getElementById('start-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function openProgram(name) {
+            alert('Запуск программы: ' + name);
+            document.getElementById('start-menu').style.display = 'none';
+        }
+
+        // Закрыть меню при клике вне его
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.start-menu') && !e.target.closest('.start-button')) {
+                document.getElementById('start-menu').style.display = 'none';
+            }
+        });
+
+        // Управление окнами
+        function openWindow(id) {
+            const window = document.getElementById(id);
+            window.style.display = 'flex';
+            window.style.zIndex = getHighestZIndex() + 1;
+            focusWindow(id);
+        }
+
+        function closeWindow(id) {
+            document.getElementById(id).style.display = 'none';
+            document.getElementById('taskbar-' + id).style.display = 'none';
+        }
+
+        function minimizeWindow(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function maximizeWindow(id) {
+            const window = document.getElementById(id);
+            if (window.style.width === '100%') {
+                window.style.width = '700px';
+                window.style.height = '450px';
+                window.style.top = '80px';
+                window.style.left = '150px';
+            } else {
+                window.style.width = '100%';
+                window.style.height = 'calc(100% - 40px)';
+                window.style.top = '0';
+                window.style.left = '0';
+            }
+        }
+
+        function focusWindow(id) {
+            document.getElementById(id).style.zIndex = getHighestZIndex() + 1;
+            document.querySelectorAll('.taskbar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.getElementById('taskbar-' + id).classList.add('active');
+        }
+
+        function getHighestZIndex() {
+            return Array.from(document.querySelectorAll('*'))
+                .map(el => parseFloat(getComputedStyle(el).zIndex))
+                .filter(zIndex => !isNaN(zIndex))
+                .reduce((max, zIndex) => Math.max(max, zIndex), 0);
+        }
+
+        // Перетаскивание окон
+        let activeWindow = null;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        document.querySelectorAll('.title-bar').forEach(titleBar => {
+            titleBar.addEventListener('mousedown', function(e) {
+                activeWindow = this.parentElement;
+                offsetX = e.clientX - activeWindow.getBoundingClientRect().left;
+                offsetY = e.clientY - activeWindow.getBoundingClientRect().top;
+                activeWindow.style.zIndex = getHighestZIndex() + 1;
+                focusWindow(activeWindow.id);
+            });
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (activeWindow) {
+                activeWindow.style.left = (e.clientX - offsetX) + 'px';
+                activeWindow.style.top = (e.clientY - offsetY) + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            activeWindow = null;
+        });
+
+        // Кнопка выхода
+        function exitToMain() {
+            if (confirm('Вернуться на главную страницу?')) {
+                window.location.href = '/'; // Замените на нужный URL
+            }
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            // Добавляем обработчики для всех окон
+            document.querySelectorAll('.window').forEach(window => {
+                window.addEventListener('mousedown', function() {
+                    this.style.zIndex = getHighestZIndex() + 1;
+                    focusWindow(this.id);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -52,7 +52,6 @@
             padding: 0 1.5rem;
         }
 
-        /* Header */
         header {
             background-color: var(--header-bg);
             border-bottom: 1px solid var(--border);
@@ -114,7 +113,6 @@
             text-decoration: underline;
         }
 
-        /* Hero section */
         .hero {
             text-align: center;
             padding: 3rem 0;
@@ -137,7 +135,33 @@
             margin: 0 auto 2rem;
         }
 
-        /* Version Grid */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         .version-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -246,7 +270,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Support Section */
         .support-section {
             background-color: var(--card-bg);
             border: 1px solid var(--border);
@@ -286,7 +309,59 @@
             font-size: 0.9rem;
         }
 
-        /* Footer */
+        .script-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .script-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .script-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .script-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .script-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .script-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .script-download {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .script-download:hover {
+            background-color: #3d8bf0;
+        }
+
         footer {
             padding: 3rem 0;
             text-align: center;
@@ -313,7 +388,6 @@
             text-decoration: underline;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
@@ -339,9 +413,20 @@
             .support-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .script-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                border-bottom: 1px solid var(--border);
+            }
         }
 
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -384,143 +469,205 @@
             </p>
         </section>
 
-        <section>
-            <h2 class="section-title">Выберите версию macOS</h2>
-            <div class="version-grid">
-                <!-- macOS 14 Sonoma -->
-                <a href="articles/sonoma-guides.html" class="version-card animate">
-                    <span class="version-badge">Актуальная</span>
-                    <div class="version-icon">
-                        <i class="fab fa-apple"></i>
-                    </div>
-                    <h3>macOS Sonoma</h3>
-                    <div class="version-number">Версия 14.x</div>
-                    <div class="version-dates">2023 - настоящее время</div>
-                    <p class="version-description">Последняя версия macOS с виджетами на рабочем столе, игровым режимом и улучшенными функциями безопасности.</p>
-                    <div class="version-features">
-                        <span class="feature-tag">Виджеты</span>
-                        <span class="feature-tag">Game Mode</span>
-                        <span class="feature-tag">Safari 17</span>
-                    </div>
-                </a>
+        <div class="tabs">
+            <div class="tab active" data-tab="versions">Версии macOS</div>
+            <div class="tab" data-tab="scripts">Общие скрипты</div>
+        </div>
 
-                <!-- macOS 13 Ventura -->
-                <a href="articles/ventura-guides.html" class="version-card animate delay-1">
-                    <div class="version-icon">
-                        <i class="fab fa-apple"></i>
-                    </div>
-                    <h3>macOS Ventura</h3>
-                    <div class="version-number">Версия 13.x</div>
-                    <div class="version-dates">2022 - 2023</div>
-                    <p class="version-description">Stage Manager, Continuity Camera и новые приложения "Настройки" и "Сообщения".</p>
-                    <div class="version-features">
-                        <span class="feature-tag">Stage Manager</span>
-                        <span class="feature-tag">Continuity</span>
-                        <span class="feature-tag">Security</span>
-                    </div>
-                </a>
+        <div class="tab-content active" id="versions-tab">
+            <section>
+                <h2 class="section-title">Выберите версию macOS</h2>
+                <div class="version-grid">
+                    <a href="articles/sonoma-guides.html" class="version-card animate">
+                        <span class="version-badge">Актуальная</span>
+                        <div class="version-icon">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <h3>macOS Sonoma</h3>
+                        <div class="version-number">Версия 14.x</div>
+                        <div class="version-dates">2023 - настоящее время</div>
+                        <p class="version-description">Последняя версия macOS с виджетами на рабочем столе, игровым режимом и улучшенными функциями безопасности.</p>
+                        <div class="version-features">
+                            <span class="feature-tag">Виджеты</span>
+                            <span class="feature-tag">Game Mode</span>
+                            <span class="feature-tag">Safari 17</span>
+                        </div>
+                    </a>
 
-                <!-- macOS 12 Monterey -->
-                <a href="articles/monterey-guides.html" class="version-card animate delay-1">
-                    <div class="version-icon">
-                        <i class="fab fa-apple"></i>
-                    </div>
-                    <h3>macOS Monterey</h3>
-                    <div class="version-number">Версия 12.x</div>
-                    <div class="version-dates">2021 - 2022</div>
-                    <p class="version-description">Universal Control, Focus режимы и быстрые заметки для повышения продуктивности.</p>
-                    <div class="version-features">
-                        <span class="feature-tag">Universal Control</span>
-                        <span class="feature-tag">Focus</span>
-                        <span class="feature-tag">Shortcuts</span>
-                    </div>
-                </a>
+                    <a href="articles/ventura-guides.html" class="version-card animate delay-1">
+                        <div class="version-icon">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <h3>macOS Ventura</h3>
+                        <div class="version-number">Версия 13.x</div>
+                        <div class="version-dates">2022 - 2023</div>
+                        <p class="version-description">Stage Manager, Continuity Camera и новые приложения "Настройки" и "Сообщения".</p>
+                        <div class="version-features">
+                            <span class="feature-tag">Stage Manager</span>
+                            <span class="feature-tag">Continuity</span>
+                            <span class="feature-tag">Security</span>
+                        </div>
+                    </a>
 
-                <!-- macOS 11 Big Sur -->
-                <a href="articles/bigsur-guides.html" class="version-card animate delay-2">
-                    <div class="version-icon">
-                        <i class="fab fa-apple"></i>
-                    </div>
-                    <h3>macOS Big Sur</h3>
-                    <div class="version-number">Версия 11.x</div>
-                    <div class="version-dates">2020 - 2021</div>
-                    <p class="version-description">Полный редизайн интерфейса, поддержка Apple Silicon и новые приложения.</p>
-                    <div class="version-features">
-                        <span class="feature-tag">Apple Silicon</span>
-                        <span class="feature-tag">Redesign</span>
-                        <span class="feature-tag">Control Center</span>
-                    </div>
-                </a>
+                    <a href="articles/monterey-guides.html" class="version-card animate delay-1">
+                        <div class="version-icon">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <h3>macOS Monterey</h3>
+                        <div class="version-number">Версия 12.x</div>
+                        <div class="version-dates">2021 - 2022</div>
+                        <p class="version-description">Universal Control, Focus режимы и быстрые заметки для повышения продуктивности.</p>
+                        <div class="version-features">
+                            <span class="feature-tag">Universal Control</span>
+                            <span class="feature-tag">Focus</span>
+                            <span class="feature-tag">Shortcuts</span>
+                        </div>
+                    </a>
 
-                <!-- macOS 10.15 Catalina -->
-                <a href="articles/catalina-guides.html" class="version-card animate delay-2">
-                    <span class="version-badge legacy">Легаси</span>
-                    <div class="version-icon">
-                        <i class="fab fa-apple"></i>
-                    </div>
-                    <h3>macOS Catalina</h3>
-                    <div class="version-number">Версия 10.15</div>
-                    <div class="version-dates">2019 - 2020</div>
-                    <p class="version-description">Замена iTunes на отдельные приложения, Sidecar и запуск iPad приложений.</p>
-                    <div class="version-features">
-                        <span class="feature-tag">Sidecar</span>
-                        <span class="feature-tag">Catalyst</span>
-                        <span class="feature-tag">Music App</span>
-                    </div>
-                </a>
+                    <a href="articles/bigsur-guides.html" class="version-card animate delay-2">
+                        <div class="version-icon">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <h3>macOS Big Sur</h3>
+                        <div class="version-number">Версия 11.x</div>
+                        <div class="version-dates">2020 - 2021</div>
+                        <p class="version-description">Полный редизайн интерфейса, поддержка Apple Silicon и новые приложения.</p>
+                        <div class="version-features">
+                            <span class="feature-tag">Apple Silicon</span>
+                            <span class="feature-tag">Redesign</span>
+                            <span class="feature-tag">Control Center</span>
+                        </div>
+                    </a>
 
-                <!-- macOS 10.14 Mojave -->
-                <a href="articles/mojave-guides.html" class="version-card animate delay-3">
-                    <span class="version-badge legacy">Легаси</span>
-                    <div class="version-icon">
-                        <i class="fab fa-apple"></i>
-                    </div>
-                    <h3>macOS Mojave</h3>
-                    <div class="version-number">Версия 10.14</div>
-                    <div class="version-dates">2018 - 2019</div>
-                    <p class="version-description">Темный режим, динамические обои и новые приложения из iOS.</p>
-                    <div class="version-features">
-                        <span class="feature-tag">Dark Mode</span>
-                        <span class="feature-tag">Stacks</span>
-                        <span class="feature-tag">News App</span>
-                    </div>
-                </a>
+                    <a href="articles/catalina-guides.html" class="version-card animate delay-2">
+                        <span class="version-badge legacy">Легаси</span>
+                        <div class="version-icon">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <h3>macOS Catalina</h3>
+                        <div class="version-number">Версия 10.15</div>
+                        <div class="version-dates">2019 - 2020</div>
+                        <p class="version-description">Замена iTunes на отдельные приложения, Sidecar и запуск iPad приложений.</p>
+                        <div class="version-features">
+                            <span class="feature-tag">Sidecar</span>
+                            <span class="feature-tag">Catalyst</span>
+                            <span class="feature-tag">Music App</span>
+                        </div>
+                    </a>
 
-                <!-- macOS 10.0-10.13 -->
-                <div class="version-card animate delay-3">
-                    <span class="version-badge legacy">История</span>
-                    <div class="version-icon">
-                        <i class="fas fa-history"></i>
+                    <a href="articles/mojave-guides.html" class="version-card animate delay-3">
+                        <span class="version-badge legacy">Легаси</span>
+                        <div class="version-icon">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <h3>macOS Mojave</h3>
+                        <div class="version-number">Версия 10.14</div>
+                        <div class="version-dates">2018 - 2019</div>
+                        <p class="version-description">Темный режим, динамические обои и новые приложения из iOS.</p>
+                        <div class="version-features">
+                            <span class="feature-tag">Dark Mode</span>
+                            <span class="feature-tag">Stacks</span>
+                            <span class="feature-tag">News App</span>
+                        </div>
+                    </a>
+
+                    <div class="version-card animate delay-3">
+                        <span class="version-badge legacy">История</span>
+                        <div class="version-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h3>macOS 10.0-10.13</h3>
+                        <div class="version-number">Cheetah - High Sierra</div>
+                        <div class="version-dates">2001 - 2017</div>
+                        <p class="version-description">Классические версии Mac OS X: от Cheetah до High Sierra. Руководства по совместимости и миграции.</p>
+                        <div class="version-features">
+                            <span class="feature-tag">Classic</span>
+                            <span class="feature-tag">Migration</span>
+                            <span class="feature-tag">Compatibility</span>
+                        </div>
                     </div>
-                    <h3>macOS 10.0-10.13</h3>
-                    <div class="version-number">Cheetah - High Sierra</div>
-                    <div class="version-dates">2001 - 2017</div>
-                    <p class="version-description">Классические версии Mac OS X: от Cheetah до High Sierra. Руководства по совместимости и миграции.</p>
-                    <div class="version-features">
-                        <span class="feature-tag">Classic</span>
-                        <span class="feature-tag">Migration</span>
-                        <span class="feature-tag">Compatibility</span>
+
+                    <div class="version-card">
+                        <span class="version-badge soon">Скоро</span>
+                        <div class="version-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>macOS 26</h3>
+                        <div class="version-number">Будущая версия</div>
+                        <div class="version-dates">~2029 год</div>
+                        <p class="version-description">Следующее поколение macOS с искусственным интеллектом, расширенной реальностью и революционным интерфейсом.</p>
+                        <div class="version-features">
+                            <span class="feature-tag">AI</span>
+                            <span class="feature-tag">AR</span>
+                            <span class="feature-tag">Future Tech</span>
+                        </div>
                     </div>
                 </div>
+            </section>
+        </div>
 
-                <!-- macOS 26 (Future) -->
-                <div class="version-card">
-                    <span class="version-badge soon">Скоро</span>
-                    <div class="version-icon">
-                        <i class="fas fa-rocket"></i>
+        <div class="tab-content" id="scripts-tab">
+            <section>
+                <h2 class="section-title">Полезные скрипты для macOS</h2>
+                <p class="hero-description">Готовые решения для автоматизации задач, оптимизации системы и решения распространенных проблем.</p>
+                
+                <div class="script-grid">
+                    <div class="script-card animate">
+                        <div class="script-icon">
+                            <i class="fas fa-broom"></i>
+                        </div>
+                        <h3>Очистка системы</h3>
+                        <p>Скрипт для удаления временных файлов, кэшей и освобождения места на диске. Безопасная очистка системного мусора.</p>
+                        <a href="#" class="script-download">Скачать .command</a>
                     </div>
-                    <h3>macOS 26</h3>
-                    <div class="version-number">Будущая версия</div>
-                    <div class="version-dates">~2029 год</div>
-                    <p class="version-description">Следующее поколение macOS с искусственным интеллектом, расширенной реальностью и революционным интерфейсом.</p>
-                    <div class="version-features">
-                        <span class="feature-tag">AI</span>
-                        <span class="feature-tag">AR</span>
-                        <span class="feature-tag">Future Tech</span>
+                    
+                    <div class="script-card animate delay-1">
+                        <div class="script-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h3>Оптимизация производительности</h3>
+                        <p>Настройка параметров системы для ускорения работы Mac. Оптимизация энергопотребления и управления памятью.</p>
+                        <a href="#" class="script-download">Скачать .command</a>
+                    </div>
+                    
+                    <div class="script-card animate delay-1">
+                        <div class="script-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Безопасность и приватность</h3>
+                        <p>Настройка параметров безопасности macOS, управление разрешениями и конфиденциальностью приложений.</p>
+                        <a href="#" class="script-download">Скачать .command</a>
+                    </div>
+                    
+                    <div class="script-card animate delay-2">
+                        <div class="script-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3>Сброс сетевых настроек</h3>
+                        <p>Автоматический сброс сетевых конфигураций, DNS кэша и восстановление стандартных сетевых параметров.</p>
+                        <a href="#" class="script-download">Скачать .command</a>
+                    </div>
+                    
+                    <div class="script-card animate delay-2">
+                        <div class="script-icon">
+                            <i class="fas fa-backup"></i>
+                        </div>
+                        <h3>Резервное копирование</h3>
+                        <p>Автоматизация процесса резервного копирования важных файлов и папок с настройкой расписания.</p>
+                        <a href="#" class="script-download">Скачать .command</a>
+                    </div>
+                    
+                    <div class="script-card animate delay-3">
+                        <div class="script-icon">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+                        <h3>Восстановление прав доступа</h3>
+                        <p>Исправление прав доступа к файлам и папкам, восстановление стандартных разрешений системы.</p>
+                        <a href="#" class="script-download">Скачать .command</a>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
         <section class="support-section">
             <h2 class="support-title">Нужна помощь с macOS?</h2>
@@ -565,7 +712,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Animation on scroll
             const animatedElements = document.querySelectorAll('.animate');
             
             const observer = new IntersectionObserver((entries) => {
@@ -582,6 +728,21 @@
                 el.style.transform = 'translateY(10px)';
                 el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 observer.observe(el);
+            });
+
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
             });
         });
     </script>

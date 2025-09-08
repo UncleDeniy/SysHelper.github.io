@@ -116,6 +116,34 @@
             color: var(--accent);
         }
 
+        .nav-link.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--bg-secondary);
+        }
+
         .breadcrumb {
             padding: 1rem 0;
             color: var(--text-secondary);
@@ -152,6 +180,7 @@
 
         .section {
             padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
         }
 
         .section-title {
@@ -159,6 +188,33 @@
             margin-bottom: 2rem;
             text-align: center;
             color: var(--text-primary);
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .distro-grid {
@@ -219,6 +275,11 @@
             font-size: 3rem;
             margin-bottom: 1.2rem;
             text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .distro-card:hover .distro-icon {
+            transform: scale(1.1);
         }
 
         .distro-card[data-distro="ubuntu"] .distro-icon { color: var(--accent-ubuntu); }
@@ -324,6 +385,59 @@
             margin-bottom: 1rem;
         }
 
+        .script-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .script-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .script-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .script-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .script-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .script-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .script-download {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .script-download:hover {
+            background-color: #3a7bd5;
+        }
+
         footer {
             padding: 3rem 0;
             text-align: center;
@@ -371,6 +485,18 @@
             .problems-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .script-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                border-bottom: 1px solid var(--border);
+            }
         }
 
         @keyframes fadeIn {
@@ -403,9 +529,16 @@
             
             <div class="nav">
                 <a href="../../index.html" class="nav-link">Главная</a>
-                <a href="#" class="nav-link">О проекте</a>
+                <a href="#" class="nav-link active">Linux</a>
                 <a href="#" class="nav-link">Помощь</a>
                 <a href="scripts.html" class="nav-link">Общие скрипты</a>
+            </div>
+            
+            <div class="controls">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Тема</span>
+                </button>
             </div>
         </div>
     </header>
@@ -427,195 +560,269 @@
             </div>
         </section>
 
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">Выберите ваш дистрибутив</h2>
-                <div class="distro-grid">
-                    <a href="ubuntu/ubuntu.html" class="distro-card animate delay-1" data-distro="ubuntu">
-                        <div class="distro-icon">
-                            <i class="fab fa-ubuntu"></i>
-                        </div>
-                        <h3>Ubuntu</h3>
-                        <p>Самый популярный дистрибутив для начинающих и опытных пользователей</p>
-                        <ul class="distro-features">
-                            <li><i class="fas fa-check"></i> DEB пакеты</li>
-                            <li><i class="fas fa-check"></i> Snap поддержка</li>
-                            <li><i class="fas fa-check"></i> LTS версии</li>
-                        </ul>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <a href="debian/debian.html" class="distro-card animate delay-2" data-distro="debian">
-                        <div class="distro-icon">
-                            <i class="fab fa-debian"></i>
-                        </div>
-                        <h3>Debian</h3>
-                        <p>Стабильный и надежный дистрибутив для серверов и рабочих станций</p>
-                        <ul class="distro-features">
-                            <li><i class="fas fa-check"></i> Стабильные пакеты</li>
-                            <li><i class="fas fa-check"></i> APT менеджер</li>
-                            <li><i class="fas fa-check"></i> Тестирование/Нестабильный</li>
-                        </ul>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <a href="fedora/fedora.html" class="distro-card animate delay-3" data-distro="fedora">
-                        <div class="distro-icon">
-                            <i class="fab fa-fedora"></i>
-                        </div>
-                        <h3>Fedora</h3>
-                        <p>Инновационный дистрибутив с последними технологиями от Red Hat</p>
-                        <ul class="distro-features">
-                            <li><i class="fas fa-check"></i> RPM пакеты</li>
-                            <li><i class="fas fa-check"></i> DNF менеджер</li>
-                            <li><i class="fas fa-check"></i> SELinux по умолчанию</li>
-                        </ul>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <a href="arch/arch.html" class="distro-card animate delay-4" data-distro="arch">
-                        <div class="distro-icon">
-                            <i class="fab fa-linux"></i>
-                        </div>
-                        <h3>Arch Linux</h3>
-                        <p>Минималистичный дистрибутив для опытных пользователей</p>
-                        <ul class="distro-features">
-                            <li><i class="fas fa-check"></i> Rolling release</li>
-                            <li><i class="fas fa-check"></i> Pacman менеджер</li>
-                            <li><i class="fas fa-check"></i> AUR репозитории</li>
-                        </ul>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <a href="centos/centos.html" class="distro-card animate delay-5" data-distro="centos">
-                        <div class="distro-icon">
-                            <i class="fab fa-centos"></i>
-                        </div>
-                        <h3>CentOS</h3>
-                        <p>Предприятий-класс дистрибутив на основе Red Hat Enterprise Linux</p>
-                        <ul class="distro-features">
-                            <li><i class="fas fa-check"></i> Стабильность</li>
-                            <li><i class="fas fa-check"></i> Долгосрочная поддержка</li>
-                            <li><i class="fas fa-check"></i> Серверная оптимизация</li>
-                        </ul>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <a href="opensuse/opensuse.html" class="distro-card animate delay-6" data-distro="opensuse">
-                        <div class="distro-icon">
-                            <i class="fab fa-suse"></i>
-                        </div>
-                        <h3>openSUSE</h3>
-                        <p>Мощный дистрибутив с инструментами администрирования YaST</p>
-                        <ul class="distro-features">
-                            <li><i class="fas fa-check"></i> Zypper менеджер</li>
-                            <li><i class="fas fa-check"></i> Tumbleweed/Leap</li>
-                            <li><i class="fas fa-check"></i> Btrfs по умолчанию</li>
-                        </ul>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <a href="redos/redos.html" class="distro-card animate delay-7" data-distro="redos">
-                        <div class="distro-icon">
-                            <i class="fab fa-linux"></i>
-                        </div>
-                        <h3>Red OS</h3>
-                        <p>Российский дистрибутив для государственных организаций и предприятий</p>
-                        <ul class="distro-features">
-                            <li><i class="fas fa-check"></i> Российская разработка</li>
-                            <li><i class="fas fa-check"></i> Безопасность</li>
-                            <li><i class="fas fa-check"></i> Сертификация ФСТЭК</li>
-                        </ul>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <a href="mandriva/mandriva.html" class="distro-card animate delay-8" data-distro="mandriva">
-                        <div class="distro-icon">
-                            <i class="fab fa-linux"></i>
-                        </div>
-                        <h3>Mandriva</h3>
-                        <p>Дистрибутив с удобным графическим интерфейсом и инструментами настройки</p>
-                        <ul class="distro-features">
-                            <li><i class="fas fa-check"></i> RPM пакеты</li>
-                            <li><i class="fas fa-check"></i> DrakX инструменты</li>
-                            <li><i class="fas fa-check"></i> Простота использования</li>
-                        </ul>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <a href="openmandriva/openmandriva.html" class="distro-card animate delay-9" data-distro="openmandriva">
-                        <div class="distro-icon">
-                            <i class="fab fa-linux"></i>
-                        </div>
-                        <h3>OpenMandriva</h3>
-                        <p>Продолжение развития Mandriva Linux с современными технологиями</p>
-                        <ul class="distro-features">
-                            <li><i class="fas fa-check"></i> Rolling release</li>
-                            <li><i class="fas fa-check"></i> KDE Plasma</li>
-                            <li><i class="fas fa-check"></i> Оптимизация под современное железо</li>
-                        </ul>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                    
-                    <a href="astra/astra.html" class="distro-card animate delay-9" data-distro="astra">
-                        <div class="distro-icon">
-                            <i class="fab fa-linux"></i>
-                        </div>
-                        <h3>Astra Linux</h3>
-                        <p>Российский защищенный дистрибутив для специальных задач</p>
-                        <ul class="distro-features">
-                            <li><i class="fas fa-check"></i> Высокая безопасность</li>
-                            <li><i class="fas fa-check"></i> Сертификация</li>
-                            <li><i class="fas fa-check"></i> Для госучреждений</li>
-                        </ul>
-                        <span class="btn btn-primary">Получить помощь</span>
-                    </a>
-                </div>
+        <div class="container">
+            <div class="tabs">
+                <div class="tab active" data-tab="distros">Дистрибутивы</div>
+                <div class="tab" data-tab="scripts">Общие скрипты</div>
             </div>
-        </section>
+        </div>
 
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">Распространенные проблемы Linux</h2>
-                <div class="problems-grid">
-                    <div class="problem-card animate">
-                        <div class="problem-icon">
-                            <i class="fas fa-wifi"></i>
-                        </div>
-                        <h3>Проблемы с Wi-Fi</h3>
-                        <p>Решение проблем с драйверами беспроводных сетей и подключением</p>
-                        <a href="#" class="btn btn-primary">Решить проблему</a>
-                    </div>
-                    
-                    <div class="problem-card animate delay-1">
-                        <div class="problem-icon">
-                            <i class="fas fa-video"></i>
-                        </div>
-                        <h3>Драйверы видеокарт</h3>
-                        <p>Установка и настройка драйверов NVIDIA, AMD и Intel</p>
-                        <a href="#" class="btn btn-primary">Решить проблему</a>
-                    </div>
-                    
-                    <div class="problem-card animate delay-2">
-                        <div class="problem-icon">
-                            <i class="fas fa-download"></i>
-                        </div>
-                        <h3>Установка программ</h3>
-                        <p>Работа с пакетными менеджерами и компиляция из исходников</p>
-                        <a href="#" class="btn btn-primary">Решить проблему</a>
-                    </div>
-                    
-                    <div class="problem-card animate delay-3">
-                        <div class="problem-icon">
-                            <i class="fas fa-terminal"></i>
-                        </div>
-                        <h3>Командная строка</h3>
-                        <p>Изучение Bash, скрипты и автоматизация задач</p>
-                        <a href="#" class="btn btn-primary">Решить проблему</a>
+        <div class="tab-content active" id="distros-tab">
+            <section class="section">
+                <div class="container">
+                    <h2 class="section-title">Выберите ваш дистрибутив</h2>
+                    <div class="distro-grid">
+                        <a href="ubuntu/ubuntu.html" class="distro-card animate delay-1" data-distro="ubuntu">
+                            <div class="distro-icon">
+                                <i class="fab fa-ubuntu"></i>
+                            </div>
+                            <h3>Ubuntu</h3>
+                            <p>Самый популярный дистрибутив для начинающих и опытных пользователей</p>
+                            <ul class="distro-features">
+                                <li><i class="fas fa-check"></i> DEB пакеты</li>
+                                <li><i class="fas fa-check"></i> Snap поддержка</li>
+                                <li><i class="fas fa-check"></i> LTS версии</li>
+                            </ul>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <a href="debian/debian.html" class="distro-card animate delay-2" data-distro="debian">
+                            <div class="distro-icon">
+                                <i class="fab fa-debian"></i>
+                            </div>
+                            <h3>Debian</h3>
+                            <p>Стабильный и надежный дистрибутив для серверов и рабочих станций</p>
+                            <ul class="distro-features">
+                                <li><i class="fas fa-check"></i> Стабильные пакеты</li>
+                                <li><i class="fas fa-check"></i> APT менеджер</li>
+                                <li><i class="fas fa-check"></i> Тестирование/Нестабильный</li>
+                            </ul>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <a href="fedora/fedora.html" class="distro-card animate delay-3" data-distro="fedora">
+                            <div class="distro-icon">
+                                <i class="fab fa-fedora"></i>
+                            </div>
+                            <h3>Fedora</h3>
+                            <p>Инновационный дистрибутив с последними технологиями от Red Hat</p>
+                            <ul class="distro-features">
+                                <li><i class="fas fa-check"></i> RPM пакеты</li>
+                                <li><i class="fas fa-check"></i> DNF менеджер</li>
+                                <li><i class="fas fa-check"></i> SELinux по умолчанию</li>
+                            </ul>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <a href="arch/arch.html" class="distro-card animate delay-4" data-distro="arch">
+                            <div class="distro-icon">
+                                <i class="fab fa-linux"></i>
+                            </div>
+                            <h3>Arch Linux</h3>
+                            <p>Минималистичный дистрибутив для опытных пользователей</p>
+                            <ul class="distro-features">
+                                <li><i class="fas fa-check"></i> Rolling release</li>
+                                <li><i class="fas fa-check"></i> Pacman менеджер</li>
+                                <li><i class="fas fa-check"></i> AUR репозитории</li>
+                            </ul>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <a href="centos/centos.html" class="distro-card animate delay-5" data-distro="centos">
+                            <div class="distro-icon">
+                                <i class="fab fa-centos"></i>
+                            </div>
+                            <h3>CentOS</h3>
+                            <p>Предприятий-класс дистрибутив на основе Red Hat Enterprise Linux</p>
+                            <ul class="distro-features">
+                                <li><i class="fas fa-check"></i> Стабильность</li>
+                                <li><i class="fas fa-check"></i> Долгосрочная поддержка</li>
+                                <li><i class="fas fa-check"></i> Серверная оптимизация</li>
+                            </ul>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <a href="opensuse/opensuse.html" class="distro-card animate delay-6" data-distro="opensuse">
+                            <div class="distro-icon">
+                                <i class="fab fa-suse"></i>
+                            </div>
+                            <h3>openSUSE</h3>
+                            <p>Мощный дистрибутив с инструментами администрирования YaST</p>
+                            <ul class="distro-features">
+                                <li><i class="fas fa-check"></i> Zypper менеджер</li>
+                                <li><i class="fas fa-check"></i> Tumbleweed/Leap</li>
+                                <li><i class="fas fa-check"></i> Btrfs по умолчанию</li>
+                            </ul>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <a href="redos/redos.html" class="distro-card animate delay-7" data-distro="redos">
+                            <div class="distro-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Red OS</h3>
+                            <p>Российский дистрибутив для государственных организаций и предприятий</p>
+                            <ul class="distro-features">
+                                <li><i class="fas fa-check"></i> Российская разработка</li>
+                                <li><i class="fas fa-check"></i> Безопасность</li>
+                                <li><i class="fas fa-check"></i> Сертификация ФСТЭК</li>
+                            </ul>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <a href="mandriva/mandriva.html" class="distro-card animate delay-8" data-distro="mandriva">
+                            <div class="distro-icon">
+                                <i class="fas fa-dragon"></i>
+                            </div>
+                            <h3>Mandriva</h3>
+                            <p>Дистрибутив с удобным графическим интерфейсом и инструментами настройки</p>
+                            <ul class="distro-features">
+                                <li><i class="fas fa-check"></i> RPM пакеты</li>
+                                <li><i class="fas fa-check"></i> DrakX инструменты</li>
+                                <li><i class="fas fa-check"></i> Простота использования</li>
+                            </ul>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <a href="openmandriva/openmandriva.html" class="distro-card animate delay-9" data-distro="openmandriva">
+                            <div class="distro-icon">
+                                <i class="fas fa-dove"></i>
+                            </div>
+                            <h3>OpenMandriva</h3>
+                            <p>Продолжение развития Mandriva Linux с современными технологиями</p>
+                            <ul class="distro-features">
+                                <li><i class="fas fa-check"></i> Rolling release</li>
+                                <li><i class="fas fa-check"></i> KDE Plasma</li>
+                                <li><i class="fas fa-check"></i> Оптимизация под современное железо</li>
+                            </ul>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
+                        
+                        <a href="astra/astra.html" class="distro-card animate delay-9" data-distro="astra">
+                            <div class="distro-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h3>Astra Linux</h3>
+                            <p>Российский защищенный дистрибутив для специальных задач</p>
+                            <ul class="distro-features">
+                                <li><i class="fas fa-check"></i> Высокая безопасность</li>
+                                <li><i class="fas fa-check"></i> Сертификация</li>
+                                <li><i class="fas fa-check"></i> Для госучреждений</li>
+                            </ul>
+                            <span class="btn btn-primary">Получить помощь</span>
+                        </a>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <h2 class="section-title">Распространенные проблемы Linux</h2>
+                    <div class="problems-grid">
+                        <div class="problem-card animate">
+                            <div class="problem-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <h3>Проблемы с Wi-Fi</h3>
+                            <p>Решение проблем с драйверами беспроводных сетей и подключением</p>
+                            <a href="#" class="btn btn-primary">Решить проблему</a>
+                        </div>
+                        
+                        <div class="problem-card animate delay-1">
+                            <div class="problem-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <h3>Драйверы видеокарт</h3>
+                            <p>Установка и настройка драйверов NVIDIA, AMD и Intel</p>
+                            <a href="#" class="btn btn-primary">Решить проблему</a>
+                        </div>
+                        
+                        <div class="problem-card animate delay-2">
+                            <div class="problem-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <h3>Установка программ</h3>
+                            <p>Работа с пакетными менеджерами и компиляция из исходников</p>
+                            <a href="#" class="btn btn-primary">Решить проблему</a>
+                        </div>
+                        
+                        <div class="problem-card animate delay-3">
+                            <div class="problem-icon">
+                                <i class="fas fa-terminal"></i>
+                            </div>
+                            <h3>Командная строка</h3>
+                            <p>Изучение Bash, скрипты и автоматизация задач</p>
+                            <a href="#" class="btn btn-primary">Решить проблему</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="tab-content" id="scripts-tab">
+            <section class="section">
+                <div class="container">
+                    <h2 class="section-title">Полезные скрипты для Linux</h2>
+                    <p class="hero-description" style="text-align: center; margin-bottom: 2rem;">Готовые решения для автоматизации задач, оптимизации системы и решения распространенных проблем.</p>
+                    
+                    <div class="script-grid">
+                        <div class="script-card animate">
+                            <div class="script-icon">
+                                <i class="fas fa-broom"></i>
+                            </div>
+                            <h3>Очистка системы</h3>
+                            <p>Скрипт для удаления временных файлов, кэшей и освобождения места на диске. Удаление устаревших пакетов и кэша.</p>
+                            <a href="#" class="script-download">Скачать .sh</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-1">
+                            <div class="script-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <h3>Оптимизация производительности</h3>
+                            <p>Настройка параметров ядра, оптимизация работы с памятью и настройка планировщика задач для ускорения работы системы.</p>
+                            <a href="#" class="script-download">Скачать .sh</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-1">
+                            <div class="script-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Безопасность и брандмауэр</h3>
+                            <p>Настройка базовых параметров безопасности, конфигурация iptables/firewalld и аудит системы на уязвимости.</p>
+                            <a href="#" class="script-download">Скачать .sh</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-2">
+                            <div class="script-icon">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                            <h3>Сетевые настройки</h3>
+                            <p>Автоматическая настройка сетевых параметров, диагностика подключения и оптимизация TCP/IP параметров.</p>
+                            <a href="#" class="script-download">Скачать .sh</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-2">
+                            <div class="script-icon">
+                                <i class="fas fa-backup"></i>
+                            </div>
+                            <h3>Резервное копирование</h3>
+                            <p>Автоматизация процесса резервного копирования важных файлов и конфигураций с настройкой расписания.</p>
+                            <a href="#" class="script-download">Скачать .sh</a>
+                        </div>
+                        
+                        <div class="script-card animate delay-3">
+                            <div class="script-icon">
+                                <i class="fas fa-wrench"></i>
+                            </div>
+                            <h3>Восстановление системы</h3>
+                            <p>Скрипты для восстановления загрузчика GRUB, проверки целостности системных файлов и восстановления прав доступа.</p>
+                            <a href="#" class="script-download">Скачать .sh</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
 
     <footer>
@@ -634,6 +841,41 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            const themeText = themeToggle.querySelector('span');
+            
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'light' || (!savedTheme && !systemPrefersDark)) {
+                document.documentElement.setAttribute('data-color-mode', 'light');
+                document.documentElement.setAttribute('data-dark-theme', 'light');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Светлая';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Тёмная';
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-color-mode');
+                
+                if (currentTheme === 'dark') {
+                    document.documentElement.setAttribute('data-color-mode', 'light');
+                    document.documentElement.setAttribute('data-dark-theme', 'light');
+                    themeIcon.className = 'fas fa-sun';
+                    themeText.textContent = 'Светлая';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-color-mode', 'dark');
+                    document.documentElement.setAttribute('data-dark-theme', 'dark');
+                    themeIcon.className = 'fas fa-moon';
+                    themeText.textContent = 'Тёмная';
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+            
             const animatedElements = document.querySelectorAll('.animate');
             
             const observer = new IntersectionObserver((entries) => {
@@ -650,6 +892,21 @@
                 el.style.transform = 'translateY(10px)';
                 el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 observer.observe(el);
+            });
+
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
             });
         });
     </script>

@@ -9,15 +9,16 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             user-select: none;
         }
 
         body {
-            background: linear-gradient(to bottom, #005eb8, #0078d7);
+            background: #0c58a4 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230c58a4"/><path d="M0,0L100,100M100,0L0,100" stroke="%231570d6" stroke-width="1"/></svg>');
             color: #000;
             overflow: hidden;
             height: 100vh;
+            position: relative;
         }
 
         /* Панель задач Vista */
@@ -27,38 +28,46 @@
             left: 0;
             right: 0;
             height: 40px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             padding: 0 10px;
             z-index: 1000;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.3);
         }
 
         .start-button {
-            background: linear-gradient(to bottom, #6ea0e7, #4a82dc);
+            background: linear-gradient(to bottom, #7cb9f2, #4a8ad9);
             border: 1px solid #2c5bb4;
             border-radius: 3px;
-            padding: 5px 12px;
+            padding: 6px 14px;
             color: white;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
-            height: 30px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            height: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            transition: all 0.2s;
         }
 
         .start-button:hover {
-            background: linear-gradient(to bottom, #7eb0f7, #5a92ec);
+            background: linear-gradient(to bottom, #8cc9ff, #5a9ae9);
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .start-button:active {
+            background: linear-gradient(to bottom, #6ca9e2, #3a7ac9);
         }
 
         .start-button img {
             width: 18px;
             height: 18px;
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
         }
 
         .taskbar-items {
@@ -69,50 +78,64 @@
         }
 
         .taskbar-item {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 3px;
-            padding: 4px 12px;
+            padding: 5px 14px;
             color: white;
-            font-size: 11px;
+            font-size: 12px;
             cursor: pointer;
-            height: 30px;
+            height: 32px;
             display: flex;
             align-items: center;
             gap: 6px;
             backdrop-filter: blur(5px);
+            transition: all 0.2s;
+        }
+
+        .taskbar-item:hover {
+            background: rgba(255, 255, 255, 0.25);
         }
 
         .taskbar-item.active {
             background: rgba(255, 255, 255, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
         .system-tray {
             display: flex;
             align-items: center;
             gap: 6px;
+            margin-right: 5px;
         }
 
         .tray-icon {
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 11px;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+
+        .tray-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .clock {
             color: white;
-            font-size: 11px;
-            padding: 0 10px;
-            height: 28px;
+            font-size: 12px;
+            padding: 0 12px;
+            height: 30px;
             display: flex;
             align-items: center;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 3px;
+            margin-left: 5px;
         }
 
         /* Окно Vista */
@@ -132,7 +155,8 @@
             overflow: auto;
             min-width: 350px;
             min-height: 250px;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
         .title-bar {
@@ -148,6 +172,7 @@
             cursor: move;
             border-radius: 6px 6px 0 0;
             border-bottom: 1px solid #3a7ac9;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
         }
 
         .window-controls {
@@ -156,9 +181,9 @@
         }
 
         .window-control {
-            width: 22px;
-            height: 20px;
-            font-size: 12px;
+            width: 24px;
+            height: 22px;
+            font-size: 13px;
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -168,6 +193,8 @@
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.2s;
         }
 
         .window-control:hover {
@@ -191,8 +218,9 @@
 
         .menu-item {
             cursor: pointer;
-            padding: 4px 8px;
+            padding: 4px 10px;
             border-radius: 3px;
+            transition: all 0.2s;
         }
 
         .menu-item:hover {
@@ -201,7 +229,7 @@
 
         .window-content {
             flex: 1;
-            padding: 12px;
+            padding: 15px;
             overflow: auto;
             background: #ffffff;
             border-radius: 0 0 6px 6px;
@@ -216,7 +244,7 @@
         }
 
         .tab {
-            padding: 8px 16px;
+            padding: 8px 18px;
             background: linear-gradient(to bottom, #f0f0f0, #e5e5e5);
             border: 1px solid #d0d0d0;
             border-bottom: none;
@@ -224,17 +252,29 @@
             cursor: pointer;
             font-size: 12px;
             border-radius: 4px 4px 0 0;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            background: linear-gradient(to bottom, #f5f5f5, #eaeaea);
         }
 
         .tab.active {
             background: linear-gradient(to bottom, #ffffff, #f5f5f5);
             border-bottom: 1px solid #ffffff;
             margin-bottom: -1px;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
         }
 
         .tab-content {
             display: none;
             padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .tab-content.active {
@@ -257,16 +297,19 @@
             text-align: center;
             font-size: 12px;
             transition: transform 0.2s;
+            padding: 10px;
+            border-radius: 5px;
         }
 
         .icon:hover {
             transform: translateY(-3px);
+            background: rgba(221, 229, 249, 0.5);
         }
 
         .icon img {
             width: 42px;
             height: 42px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             object-fit: contain;
             filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
         }
@@ -278,13 +321,15 @@
 
         .link-list li {
             margin: 10px 0;
-            padding: 8px;
+            padding: 10px;
             border-radius: 4px;
             transition: background 0.2s;
+            border-left: 3px solid transparent;
         }
 
         .link-list li:hover {
             background: #f0f5ff;
+            border-left: 3px solid #4a8ad9;
         }
 
         .link-list a {
@@ -293,6 +338,7 @@
             cursor: pointer;
             font-size: 13px;
             display: block;
+            transition: color 0.2s;
         }
 
         .link-list a:hover {
@@ -305,16 +351,24 @@
             background: linear-gradient(to bottom, #7cb9f2, #4a8ad9);
             border: 1px solid #3a7ac9;
             border-radius: 4px;
-            padding: 6px 16px;
+            padding: 8px 18px;
             font-size: 12px;
             cursor: pointer;
             color: white;
             font-weight: bold;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
         }
 
         .vista-button:hover {
             background: linear-gradient(to bottom, #8cc9ff, #5a9ae9);
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .vista-button:active {
+            background: linear-gradient(to bottom, #6ca9e2, #3a7ac9);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
         }
 
         /* Рабочий стол */
@@ -339,16 +393,21 @@
             font-size: 12px;
             text-align: center;
             transition: transform 0.2s;
+            padding: 5px;
+            border-radius: 3px;
+            border: 1px solid transparent;
         }
 
         .desktop-icon:hover {
             transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .desktop-icon img {
             width: 42px;
             height: 42px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             object-fit: contain;
             filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
         }
@@ -361,26 +420,30 @@
             bottom: 40px;
             width: 300px;
             background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             border-left: 1px solid rgba(255, 255, 255, 0.1);
             padding: 20px;
             z-index: 50;
             display: flex;
             flex-direction: column;
             gap: 15px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
         }
 
         .gadget {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             border-radius: 6px;
             padding: 15px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .gadget h3 {
             font-size: 13px;
             margin-bottom: 10px;
             color: #0066cc;
+            font-weight: bold;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
         /* Меню Пуск Vista */
@@ -394,8 +457,10 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
             display: none;
             z-index: 999;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            animation: fadeIn 0.2s ease;
         }
 
         .start-menu-header {
@@ -407,6 +472,7 @@
             padding: 0 20px;
             font-weight: bold;
             font-size: 16px;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
         }
 
         .start-menu-items {
@@ -420,6 +486,7 @@
             gap: 12px;
             cursor: pointer;
             font-size: 13px;
+            transition: all 0.2s;
         }
 
         .start-menu-item:hover {
@@ -429,6 +496,7 @@
         .start-menu-item img {
             width: 20px;
             height: 20px;
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
         }
 
         /* Кнопка выхода */
@@ -439,29 +507,113 @@
 
         /* Анимации */
         @keyframes glow {
-            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
-            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+            0% { box-shadow: 0 0 5px rgba(74, 138, 217, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(74, 138, 217, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(74, 138, 217, 0.5); }
         }
 
         .glow-effect {
             animation: glow 2s infinite;
         }
+
+        /* Полоса прокрутки */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(240, 240, 240, 0.8);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #a0c5ef, #7cb9f2);
+            border-radius: 6px;
+            border: 2px solid rgba(240, 240, 240, 0.8);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #b0d5ff, #8cc9ff);
+        }
+
+        /* Скрипты */
+        .script-item {
+            padding: 10px;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .script-item:hover {
+            background: #e6f0ff;
+            border-color: #4a8ad9;
+        }
+
+        .script-title {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+
+        .script-description {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Vista фон */
+        .vista-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #0c58a4, #4a8ad9);
+            z-index: -2;
+        }
+
+        .vista-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230c58a4"/><path d="M0,0L100,100M100,0L0,100" stroke="%231570d6" stroke-width="1"/></svg>');
+            opacity: 0.1;
+        }
+
+        /* Vista лого */
+        .vista-logo {
+            position: absolute;
+            bottom: 60px;
+            right: 320px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 <body>
+    <!-- Vista фон -->
+    <div class="vista-background"></div>
+    <div class="vista-logo">Windows Vista</div>
+
     <!-- Рабочий стол -->
     <div class="desktop">
         <div class="desktop-icon" style="top: 20px; left: 20px;" ondblclick="openWindow('main-window')">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><circle cx='21' cy='21' r='20' fill='%230066cc'/><text x='21' y='26' font-family='Arial' font-size='14' fill='white' text-anchor='middle'>ПК</text></svg>" alt="Компьютер">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Windows_Vista.png/42px-Windows_Vista.png" alt="Компьютер">
             <span>Компьютер</span>
         </div>
         <div class="desktop-icon" style="top: 90px; left: 20px;" ondblclick="openWindow('main-window')">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><circle cx='21' cy='21' r='20' fill='%23ff6a00'/><text x='21' y='26' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>Корз</text></svg>" alt="Корзина">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Windows_recyclebin_icon.png/42px-Windows_recyclebin_icon.png" alt="Корзина">
             <span>Корзина</span>
         </div>
         <div class="desktop-icon" style="top: 160px; left: 20px;" ondblclick="openWindow('main-window')">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><circle cx='21' cy='21' r='20' fill='%230066cc'/><text x='21' y='26' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>Sys</text></svg>" alt="SysHelper">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Windows_Help_and_Support_icon.png/42px-Windows_Help_and_Support_icon.png" alt="SysHelper">
             <span>SysHelper</span>
         </div>
     </div>
@@ -471,22 +623,22 @@
         <div class="gadget">
             <h3>Центр производительности</h3>
             <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 60px; height: 60px; background: linear-gradient(to bottom, #4a8ad9, #6db1e6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">5.2</div>
+                <div style="width: 60px; height: 60px; background: linear-gradient(to bottom, #4a8ad9, #6db1e6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px; text-shadow: 0 -1px 0 rgba(0,0,0,0.3);">5.2</div>
                 <div style="font-size: 12px;">Индекс производительности<br>Базовая оценка: 5.2</div>
             </div>
         </div>
         
         <div class="gadget">
             <h3>Часы</h3>
-            <div id="sidebar-clock" style="font-size: 24px; font-weight: bold; text-align: center;">00:00:00</div>
-            <div id="sidebar-date" style="font-size: 14px; text-align: center;">1 января 2023</div>
+            <div id="sidebar-clock" style="font-size: 24px; font-weight: bold; text-align: center; color: #0066cc; text-shadow: 0 1px 0 rgba(255,255,255,0.5);">00:00:00</div>
+            <div id="sidebar-date" style="font-size: 14px; text-align: center; margin-top: 5px;">1 января 2023</div>
         </div>
         
         <div class="gadget">
             <h3>Быстрый запуск</h3>
             <div style="display: flex; flex-direction: column; gap: 8px;">
                 <button class="vista-button" onclick="openWindow('main-window')">SysHelper</button>
-                <button class="vista-button" onclick="exitToMain()">Выход</button>
+                <button class="vista-button glow-effect" onclick="exitToMain()">Выход</button>
             </div>
         </div>
     </div>
@@ -512,27 +664,28 @@
             <div class="tab active" onclick="switchTab(0)">Утилиты</div>
             <div class="tab" onclick="switchTab(1)">Руководства</div>
             <div class="tab" onclick="switchTab(2)">Исправления</div>
-            <div class="tab" onclick="switchTab(3)">Ссылки</div>
+            <div class="tab" onclick="switchTab(3)">Скрипты</div>
+            <div class="tab" onclick="switchTab(4)">Ссылки</div>
         </div>
         <div class="window-content">
             <!-- Вкладка Утилиты -->
             <div class="tab-content active">
-                <h3 style="color: #0066cc; margin-bottom: 15px;">Полезные утилиты для Windows Vista</h3>
+                <h3 style="color: #0066cc; margin-bottom: 15px; text-shadow: 0 1px 0 rgba(255,255,255,0.5);">Полезные утилиты для Windows Vista</h3>
                 <div class="icons-grid">
                     <div class="icon">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><circle cx='21' cy='21' r='20' fill='%23316ac5'/><text x='21' y='26' font-family='Arial' font-size='14' fill='white' text-anchor='middle'>CC</text></svg>" alt="CCleaner">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/CCleaner_icon.png/42px-CCleaner_icon.png" alt="CCleaner">
                         <span>CCleaner</span>
                     </div>
                     <div class="icon">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><rect width='42' height='42' rx='10' fill='%23366cb0'/><text x='21' y='26' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>Defrag</text></svg>" alt="Defraggler">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Defraggler_icon.png/42px-Defraggler_icon.png" alt="Defraggler">
                         <span>Defraggler</span>
                     </div>
                     <div class="icon">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><rect width='42' height='42' rx='10' fill='%23c75050'/><text x='21' y='26' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>AV</text></svg>" alt="Антивирус">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Avast_Software_logo_icon.png/42px-Avast_Software_logo_icon.png" alt="Антивирус">
                         <span>Антивирус</span>
                     </div>
                     <div class="icon">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'><rect width='42' height='42' rx='10' fill='%2350c750'/><text x='21' y='26' font-family='Arial' font-size='12' fill='white' text-anchor='middle'>7-Zip</text></svg>" alt="7-Zip">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/7-Zip_icon.png/42px-7-Zip_icon.png" alt="7-Zip">
                         <span>7-Zip</span>
                     </div>
                 </div>
@@ -540,7 +693,7 @@
 
             <!-- Вкладка Руководства -->
             <div class="tab-content">
-                <h3 style="color: #0066cc; margin-bottom: 15px;">Руководства по Windows Vista</h3>
+                <h3 style="color: #0066cc; margin-bottom: 15px; text-shadow: 0 1px 0 rgba(255,255,255,0.5);">Руководства по Windows Vista</h3>
                 <ul class="link-list">
                     <li><a onclick="alert('Загрузка руководства по установке...')">Установка Windows Vista</a></li>
                     <li><a onclick="alert('Загрузка руководства по настройке сети...')">Настройка сети</a></li>
@@ -552,7 +705,7 @@
 
             <!-- Вкладка Исправления -->
             <div class="tab-content">
-                <h3 style="color: #0066cc; margin-bottom: 15px;">Исправление распространенных проблем</h3>
+                <h3 style="color: #0066cc; margin-bottom: 15px; text-shadow: 0 1px 0 rgba(255,255,255,0.5);">Исправление распространенных проблем</h3>
                 <ul class="link-list">
                     <li><a onclick="showFix('Синий экран')">Синий экран смерти (BSOD)</a></li>
                     <li><a onclick="showFix('Медленная работа')">Медленная работа системы</a></li>
@@ -566,9 +719,34 @@
                 </div>
             </div>
 
+            <!-- Вкладка Скрипты -->
+            <div class="tab-content">
+                <h3 style="color: #0066cc; margin-bottom: 15px; text-shadow: 0 1px 0 rgba(255,255,255,0.5);">Полезные скрипты для Windows Vista</h3>
+                <div class="script-item" onclick="runScript('Очистка временных файлов')">
+                    <div class="script-title">Очистка временных файлов</div>
+                    <div class="script-description">Удаляет временные файлы для освобождения места на диске</div>
+                </div>
+                <div class="script-item" onclick="runScript('Оптимизация реестра')">
+                    <div class="script-title">Оптимизация реестра</div>
+                    <div class="script-description">Находит и исправляет ошибки в системном реестре</div>
+                </div>
+                <div class="script-item" onclick="runScript('Восстановление системных файлов')">
+                    <div class="script-title">Восстановление системных файлов</div>
+                    <div class="script-description">Проверяет и восстанавливает поврежденные системные файлы</div>
+                </div>
+                <div class="script-item" onclick="runScript('Настройка производительности')">
+                    <div class="script-title">Настройка производительности</div>
+                    <div class="script-description">Оптимизирует систему для повышения производительности</div>
+                </div>
+                <div class="script-item" onclick="runScript('Резервное копирование')">
+                    <div class="script-title">Резервное копирование</div>
+                    <div class="script-description">Создает резервную копию важных системных файлов</div>
+                </div>
+            </div>
+
             <!-- Вкладка Ссылки -->
             <div class="tab-content">
-                <h3 style="color: #0066cc; margin-bottom: 15px;">Полезные ссылки</h3>
+                <h3 style="color: #0066cc; margin-bottom: 15px; text-shadow: 0 1px 0 rgba(255,255,255,0.5);">Полезные ссылки</h3>
                 <ul class="link-list">
                     <li><a href="https://support.microsoft.com/ru-ru" target="_blank">Официальная поддержка Microsoft</a></li>
                     <li><a href="https://www.driverscloud.com/ru" target="_blank">Поиск драйверов</a></li>
@@ -586,21 +764,21 @@
     <!-- Панель задач -->
     <div class="taskbar">
         <div class="start-button" onclick="toggleStartMenu()">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'><circle cx='9' cy='9' r='8' fill='%234a8ad9'/><text x='9' y='12' font-family='Arial' font-size='10' fill='white' text-anchor='middle'>Start</text></svg>" alt="Пуск">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Windows_Start_Button_%282002-2006%29.svg/18px-Windows_Start_Button_%282002-2006%29.svg.png" alt="Пуск">
             Пуск
         </div>
         <div class="taskbar-items">
             <div class="taskbar-item active" id="taskbar-main" onclick="focusWindow('main-window')">
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%234a8ad9'/><text x='8' y='11' font-family='Arial' font-size='8' fill='white' text-anchor='middle'>S</text></svg>" alt="SysHelper">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Windows_Help_and_Support_icon.png/16px-Windows_Help_and_Support_icon.png" alt="SysHelper">
                 Windows Vista - SysHelper
             </div>
         </div>
         <div class="system-tray">
             <div class="tray-icon">
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%23ffffff'/><text x='8' y='12' font-family='Arial' font-size='10' fill='%230066cc' text-anchor='middle'>W</text></svg>" alt="Wi-Fi">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Windows_Vista_Networking_icon.png/16px-Windows_Vista_Networking_icon.png" alt="Wi-Fi">
             </div>
             <div class="tray-icon">
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%23ffffff'/><text x='8' y='12' font-family='Arial' font-size='10' fill='%230066cc' text-anchor='middle'>V</text></svg>" alt="Volume">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Windows_Vista_Sound_icon.png/16px-Windows_Vista_Sound_icon.png" alt="Volume">
             </div>
             <div class="clock" id="clock">00:00:00</div>
         </div>
@@ -611,19 +789,19 @@
         <div class="start-menu-header">Windows Vista</div>
         <div class="start-menu-items">
             <div class="start-menu-item" onclick="openWindow('main-window')">
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%234a8ad9'/></svg>" alt="">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Windows_Help_and_Support_icon.png/20px-Windows_Help_and_Support_icon.png" alt="">
                 SysHelper
             </div>
             <div class="start-menu-item" onclick="openProgram('Internet Explorer')">
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%230066cc'/></svg>" alt="">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Internet_Explorer_9_icon.png/20px-Internet_Explorer_9_icon.png" alt="">
                 Internet Explorer
             </div>
             <div class="start-menu-item" onclick="openProgram('Проводник')">
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%23ff6a00'/></svg>" alt="">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Windows_Explorer_Icon.png/20px-Windows_Explorer_Icon.png" alt="">
                 Проводник
             </div>
             <div class="start-menu-item" onclick="exitToMain()">
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='%23c75050'/></svg>" alt="">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Windows_logout_icon.png/20px-Windows_logout_icon.png" alt="">
                 Выход
             </div>
         </div>
@@ -655,6 +833,11 @@
             
             fixText.textContent = fixes[problem] || 'Решение не найдено';
             fixContent.style.display = 'block';
+        }
+
+        // Запуск скрипта
+        function runScript(name) {
+            alert('Запуск скрипта: ' + name + '\n\nЭто демонстрационная версия. В реальном приложении здесь бы выполнялся выбранный скрипт.');
         }
 
         // Часы

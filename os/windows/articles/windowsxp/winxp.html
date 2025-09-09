@@ -18,6 +18,7 @@
             color: #000;
             overflow: hidden;
             height: 100vh;
+            image-rendering: pixelated;
         }
 
         /* Панель задач */
@@ -33,6 +34,7 @@
             align-items: center;
             padding: 0 4px;
             z-index: 1000;
+            box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .start-button {
@@ -48,6 +50,7 @@
             align-items: center;
             gap: 4px;
             height: 22px;
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.2);
         }
 
         .start-button:hover {
@@ -55,8 +58,8 @@
         }
 
         .start-button img {
-            width: 40px;
-            height: 30px;
+            width: 16px;
+            height: 14px;
         }
 
         .taskbar-items {
@@ -78,6 +81,10 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            max-width: 200px;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.2);
         }
 
         .taskbar-item.active {
@@ -96,6 +103,7 @@
             background: linear-gradient(to bottom, #316ac5, #214ea5);
             border: 1px solid #214ea5;
             border-radius: 3px;
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.2);
         }
 
         /* Окно */
@@ -148,24 +156,19 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-        }
-
-        .window-control.minimize {
             background: #d4d0c8;
             color: #000;
             border: 1px solid #808080;
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.8);
         }
 
-        .window-control.maximize {
-            background: #d4d0c8;
-            color: #000;
-            border: 1px solid #808080;
+        .window-control:hover {
+            background: linear-gradient(to bottom, #e6e6e6, #d4d0c8);
         }
 
-        .window-control.close {
-            background: #d4d0c8;
-            color: #000;
-            border: 1px solid #808080;
+        .window-control.close:hover {
+            background: #c75050;
+            color: white;
         }
 
         .menu-bar {
@@ -181,6 +184,7 @@
 
         .menu-item {
             cursor: pointer;
+            padding: 3px 8px;
         }
 
         .menu-item:hover {
@@ -193,6 +197,8 @@
             padding: 8px;
             overflow: auto;
             background: #ffffff;
+            border: 1px solid #d4d0c8;
+            border-top: none;
         }
 
         /* Вкладки */
@@ -200,6 +206,7 @@
             display: flex;
             background: #d4d0c8;
             border-bottom: 1px solid #808080;
+            padding: 2px 2px 0 2px;
         }
 
         .tab {
@@ -210,11 +217,14 @@
             margin-right: 2px;
             cursor: pointer;
             font-size: 11px;
+            border-radius: 3px 3px 0 0;
         }
 
         .tab.active {
             background: linear-gradient(to bottom, #ffffff, #d4d0c8);
             border-bottom: 1px solid #ffffff;
+            padding-bottom: 5px;
+            margin-bottom: -1px;
         }
 
         .tab-content {
@@ -241,6 +251,15 @@
             cursor: pointer;
             text-align: center;
             font-size: 11px;
+            padding: 8px;
+            border: 1px solid transparent;
+            border-radius: 3px;
+        }
+
+        .icon:hover {
+            background-color: #316ac5;
+            color: white;
+            border: 1px dotted #316ac5;
         }
 
         .icon img {
@@ -276,6 +295,7 @@
             padding: 3px 12px;
             font-size: 11px;
             cursor: pointer;
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.8);
         }
 
         .xp-button:hover {
@@ -303,6 +323,13 @@
             text-shadow: 1px 1px 2px black;
             font-size: 11px;
             text-align: center;
+            padding: 4px;
+            border: 1px solid transparent;
+        }
+
+        .desktop-icon:hover {
+            background-color: rgba(49, 106, 197, 0.3);
+            border: 1px dotted white;
         }
 
         .desktop-icon img {
@@ -311,8 +338,6 @@
             margin-bottom: 4px;
             object-fit: contain;
         }
-
-        
 
         /* Меню Пуск */
         .start-menu {
@@ -328,6 +353,7 @@
             border-bottom-color: #808080;
             display: none;
             z-index: 999;
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
         }
 
         .start-menu-header {
@@ -338,6 +364,7 @@
             align-items: center;
             padding: 0 12px;
             font-weight: bold;
+            font-size: 12px;
         }
 
         .start-menu-items {
@@ -350,6 +377,7 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
+            font-size: 11px;
         }
 
         .start-menu-item:hover {
@@ -362,10 +390,76 @@
             height: 16px;
         }
 
+        .start-menu-footer {
+            height: 30px;
+            background: #d4d0c8;
+            border-top: 1px solid #808080;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 12px;
+        }
+
         /* Кнопка выхода */
         .exit-button {
             margin-top: 16px;
             text-align: center;
+        }
+
+        /* Стили для вкладки скриптов */
+        .script-item {
+            padding: 8px;
+            border-bottom: 1px solid #d4d0c8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .script-item:hover {
+            background-color: #316ac5;
+            color: white;
+        }
+
+        .script-item img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Полоса прокрутки в стиле XP */
+        ::-webkit-scrollbar {
+            width: 16px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #d4d0c8;
+            border: 1px solid #808080;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #d4d0c8, #a8a8a8);
+            border: 1px solid #808080;
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #a8a8a8, #d4d0c8);
+        }
+
+        ::-webkit-scrollbar-button {
+            background: linear-gradient(to bottom, #d4d0c8, #a8a8a8);
+            border: 1px solid #808080;
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.5);
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        ::-webkit-scrollbar-button:vertical:decrement {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><polygon points="6,3 2,7 10,7" fill="black"/></svg>');
+        }
+
+        ::-webkit-scrollbar-button:vertical:increment {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><polygon points="6,9 2,5 10,5" fill="black"/></svg>');
         }
     </style>
 </head>
@@ -373,15 +467,15 @@
     <!-- Рабочий стол -->
     <div class="desktop">
         <div class="desktop-icon" style="top: 20px; left: 20px;" ondblclick="openWindow('main-window')">
-            <img src="../../files/mypcxp.png" alt="Мой компьютер">
+            <img src="../../images/icons/xp/mypcxp.png" alt="Мой компьютер">
             <span>Мой компьютер</span>
         </div>
         <div class="desktop-icon" style="top: 80px; left: 20px;" ondblclick="openWindow('main-window')">
-            <img src="../../files/bin_xp.png" alt="Корзина">
+            <img src="../../images/icons/xp/bin_xp.png" alt="Корзина">
             <span>Корзина</span>
         </div>
         <div class="desktop-icon" style="top: 140px; left: 20px;" ondblclick="openWindow('main-window')">
-            <img src="../../files/logo.png" alt="SysHelper">
+            <img src="../../images/icons/logo.png" alt="SysHelper">
             <span>SysHelper</span>
         </div>
     </div>
@@ -408,6 +502,7 @@
             <div class="tab" onclick="switchTab(1)">Руководства</div>
             <div class="tab" onclick="switchTab(2)">Исправления</div>
             <div class="tab" onclick="switchTab(3)">Ссылки</div>
+            <div class="tab" onclick="switchTab(4)">Скрипты</div>
         </div>
         <div class="window-content">
             <!-- Вкладка Утилиты -->
@@ -415,19 +510,19 @@
                 <h3>Полезные утилиты для Windows XP</h3>
                 <div class="icons-grid">
                     <div class="icon">
-                        <img src="../../files/CCleanerxp.png" alt="CCleaner">
+                        <img src="../../images/icons/xp/CCleanerxp.png" alt="CCleaner">
                         <span>CCleaner</span>
                     </div>
                     <div class="icon">
-                        <img src="../../files/defragglerxp.png" alt="Defraggler">
+                        <img src="../../images/icons/xp/defragglerxp.png" alt="Defraggler">
                         <span>Defraggler</span>
                     </div>
                     <div class="icon">
-                        <img src="../../files/kaspersky_logo_old.png" alt="Антивирус">
+                        <img src="../../images/icons/kaspersky_logo_old.png" alt="Антивирус">
                         <span>Антивирус</span>
                     </div>
                     <div class="icon">
-                        <img src="../../files/7-zip_old_logo.png" alt="7-Zip">
+                        <img src="../../images/icons/xp/7-zip_old_logo.png" alt="7-Zip">
                         <span>7-Zip</span>
                     </div>
                 </div>
@@ -475,19 +570,46 @@
                     <button class="xp-button" onclick="exitToMain()">Выход</button>
                 </div>
             </div>
+
+            <!-- Вкладка Скрипты -->
+            <div class="tab-content">
+                <h3>Полезные скрипты для Windows XP</h3>
+                <div class="script-item" onclick="runScript('Очистка временных файлов')">
+                    <img src="../../images/icons/xp/clean.png" alt="Очистка">
+                    <span>Очистка временных файлов</span>
+                </div>
+                <div class="script-item" onclick="runScript('Восстановление системных файлов')">
+                    <img src="../../images/icons/xp/vost.png" alt="Восстановление">
+                    <span>Восстановление системных файлов</span>
+                </div>
+                <div class="script-item" onclick="runScript('Оптимизация реестра')">
+                    <img src="../../images/icons/xp/Regedit.png" alt="Оптимизация">
+                    <span>Оптимизация реестра</span>
+                </div>
+                <div class="script-item" onclick="runScript('Настройка сети')">
+                    <img src="../../images/icons/xp/lan.png" alt="Сеть">
+                    <span>Настройка сети</span>
+                </div>
+                <div class="script-item" onclick="runScript('Резервное копирование')">
+                    <img src="../../images/icons/xp/backup.png" alt="Резервная копия">
+                    <span>Резервное копирование</span>
+                </div>
+                <div id="script-output" style="margin-top: 20px; padding: 10px; background: #f0f0f0; border: 1px solid #ccc; display: none;">
+                    <h4>Результат выполнения:</h4>
+                    <p id="script-text"></p>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Панель задач -->
     <div class="taskbar">
         <div class="start-button" onclick="toggleStartMenu()">
-            <img src="../../files/xplogo.png" height="100" width="100" alt="Пуск">
+            <img src="../../images/icons/xp/xplogo.png" alt="Пуск">
             Пуск
         </div>
         <div class="taskbar-items">
             <div class="taskbar-item active" id="taskbar-main" onclick="focusWindow('main-window')">
-
-                Windows XP - SysHelper
             </div>
         </div>
         <div class="clock" id="clock">00:00:00</div>
@@ -498,21 +620,25 @@
         <div class="start-menu-header">Windows XP</div>
         <div class="start-menu-items">
             <div class="start-menu-item" onclick="openWindow('main-window')">
-                <img src="../../files/logo.png" alt="">
+                <img src="../../images/icons/logo.png" alt="">
                 SysHelper
             </div>
             <div class="start-menu-item" onclick="openProgram('Internet Explorer')">
-                <img src="../../files/ie_xp.png" alt="">
+                <img src="../../images/icons/xp/ie_xp.png" alt="">
                 Internet Explorer
             </div>
             <div class="start-menu-item" onclick="openProgram('Проводник')">
-                <img src="../../files/file_xp.png" alt="">
+                <img src="../../images/icons/xp/file_xp.png" alt="">
                 Проводник
             </div>
             <div class="start-menu-item" onclick="exitToMain()">
-                <img src="../../files/exit_xp.png" alt="">
+                <img src="../../images/icons/xp/exit_xp.png" alt="">
                 Выход
             </div>
+        </div>
+        <div class="start-menu-footer">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><rect width='16' height='16' fill='%23d4d0c8'/><circle cx='8' cy='8' r='6' fill='%230a246a'/></svg>" alt="">
+            <span style="font-size: 11px;">Завершение работы...</span>
         </div>
     </div>
 
@@ -542,6 +668,23 @@
             
             fixText.textContent = fixes[problem] || 'Решение не найдено';
             fixContent.style.display = 'block';
+        }
+
+        // Запуск скрипта
+        function runScript(scriptName) {
+            const scriptOutput = document.getElementById('script-output');
+            const scriptText = document.getElementById('script-text');
+            
+            const scripts = {
+                'Очистка временных файлов': 'Выполняется очистка временных файлов...\nУдалено 245 МБ временных файлов.',
+                'Восстановление системных файлов': 'Проверка целостности системных файлов...\nПоврежденные файлы не обнаружены.',
+                'Оптимизация реестра': 'Сканирование реестра...\nНайдено 12 проблем. Исправление...\nОптимизация завершена успешно.',
+                'Настройка сети': 'Диагностика сетевых подключений...\nВсе сетевые параметры настроены правильно.',
+                'Резервное копирование': 'Создание резервной копии системных файлов...\nРезервная копия успешно создана в C:\\Backup\\'
+            };
+            
+            scriptText.textContent = scripts[scriptName] || 'Скрипт не найден';
+            scriptOutput.style.display = 'block';
         }
 
         // Часы
@@ -577,11 +720,24 @@
             window.style.display = 'flex';
             window.style.zIndex = getHighestZIndex() + 1;
             focusWindow(id);
+            
+            // Добавляем окно в панель задач, если его там нет
+            if (!document.getElementById('taskbar-' + id)) {
+                const taskbarItem = document.createElement('div');
+                taskbarItem.className = 'taskbar-item';
+                taskbarItem.id = 'taskbar-' + id;
+                taskbarItem.textContent = window.querySelector('.title-bar span').textContent;
+                taskbarItem.onclick = () => focusWindow(id);
+                document.querySelector('.taskbar-items').appendChild(taskbarItem);
+            }
         }
 
         function closeWindow(id) {
             document.getElementById(id).style.display = 'none';
-            document.getElementById('taskbar-' + id).style.display = 'none';
+            const taskbarItem = document.getElementById('taskbar-' + id);
+            if (taskbarItem) {
+                taskbarItem.remove();
+            }
         }
 
         function minimizeWindow(id) {
@@ -608,7 +764,10 @@
             document.querySelectorAll('.taskbar-item').forEach(item => {
                 item.classList.remove('active');
             });
-            document.getElementById('taskbar-' + id).classList.add('active');
+            const taskbarItem = document.getElementById('taskbar-' + id);
+            if (taskbarItem) {
+                taskbarItem.classList.add('active');
+            }
         }
 
         function getHighestZIndex() {
@@ -660,6 +819,9 @@
                     focusWindow(this.id);
                 });
             });
+            
+            // Открываем главное окно при загрузке
+            openWindow('main-window');
         });
     </script>
 </body>

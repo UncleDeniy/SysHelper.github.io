@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Windows 8.1 - SysHelper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-family: 'Segoe UI', 'Segoe WP', Tahoma, sans-serif;
             user-select: none;
         }
 
@@ -27,7 +28,7 @@
             left: 0;
             right: 0;
             height: 48px;
-            background: rgba(30, 30, 30, 0.9);
+            background: rgba(30, 30, 30, 0.95);
             backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
@@ -48,6 +49,7 @@
             gap: 8px;
             height: 40px;
             border-radius: 4px;
+            transition: background 0.2s;
         }
 
         .start-button:hover {
@@ -78,27 +80,38 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: background 0.2s;
         }
 
         .taskbar-item.active {
             background: rgba(0, 120, 215, 0.8);
         }
 
+        .taskbar-item:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
         .system-tray {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
         }
 
         .tray-icon {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 14px;
             cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .tray-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .clock {
@@ -147,7 +160,7 @@
 
         .window-controls {
             display: flex;
-            gap: 8px;
+            gap: 4px;
         }
 
         .window-control {
@@ -159,6 +172,8 @@
             justify-content: center;
             cursor: pointer;
             color: white;
+            border-radius: 4px;
+            transition: background 0.2s;
         }
 
         .window-control:hover {
@@ -184,6 +199,7 @@
             cursor: pointer;
             padding: 8px 12px;
             border-radius: 4px;
+            transition: background 0.2s;
         }
 
         .menu-item:hover {
@@ -213,6 +229,7 @@
             cursor: pointer;
             font-size: 14px;
             color: #666666;
+            transition: all 0.2s;
         }
 
         .tab.active {
@@ -221,9 +238,19 @@
             font-weight: 500;
         }
 
+        .tab:hover:not(.active) {
+            color: #0078d7;
+        }
+
         .tab-content {
             display: none;
             padding: 24px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .tab-content.active {
@@ -251,11 +278,16 @@
             height: 160px;
             border-radius: 4px;
             transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .tile:hover {
             transform: translateY(-4px);
-            background: #0066b4;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .tile:active {
+            transform: translateY(0);
         }
 
         .tile img {
@@ -285,6 +317,14 @@
             background: #8661c5;
         }
 
+        .tile.red {
+            background: #e81123;
+        }
+
+        .tile.teal {
+            background: #008272;
+        }
+
         /* Списки */
         .link-list {
             list-style: none;
@@ -296,12 +336,19 @@
             background: #f8f8f8;
             border-radius: 4px;
             border-left: 4px solid #0078d7;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .link-list li:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .link-list a {
             color: #0078d7;
             text-decoration: none;
             font-weight: 500;
+            display: block;
         }
 
         .link-list a:hover {
@@ -318,11 +365,19 @@
             color: white;
             border-radius: 4px;
             font-weight: 500;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .win-button:hover {
             background: #0066b4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .win-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .win-button.green {
@@ -355,11 +410,16 @@
             text-align: center;
             padding: 8px;
             border-radius: 4px;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
         .desktop-icon:hover {
             background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .desktop-icon:active {
+            transform: translateY(0);
         }
 
         .desktop-icon img {
@@ -380,6 +440,7 @@
             display: none;
             z-index: 999;
             flex-direction: column;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
         }
 
         .start-menu-header {
@@ -411,11 +472,15 @@
             justify-content: center;
             color: white;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .start-menu-tile:hover {
             background: #464646;
+            transform: translateY(-4px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         /* Скрипты */
@@ -430,18 +495,26 @@
             border-radius: 4px;
             padding: 16px;
             border-left: 4px solid #0078d7;
+            transition: all 0.2s;
+        }
+
+        .script-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .script-title {
             font-weight: 600;
             margin-bottom: 8px;
             color: #333;
+            font-size: 16px;
         }
 
         .script-description {
             color: #666;
             margin-bottom: 12px;
             font-size: 14px;
+            line-height: 1.5;
         }
 
         /* Charms bar */
@@ -453,9 +526,10 @@
             height: 100%;
             background: #2b2b2b;
             z-index: 1001;
-            transition: right 0.3s;
+            transition: right 0.3s ease;
             padding: 80px 20px 20px 20px;
             color: white;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
         }
 
         .charms-bar.active {
@@ -467,10 +541,36 @@
             margin-bottom: 8px;
             border-radius: 4px;
             cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .charms-item:hover {
             background: #3c3c3c;
+        }
+
+        /* Анимации */
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .tile, .script-item, .link-list li {
+            animation: slideIn 0.3s ease;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .window {
+                width: 90%;
+                left: 5%;
+            }
+            
+            .tiles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
         }
     </style>
 </head>
@@ -478,15 +578,15 @@
     <!-- Рабочий стол -->
     <div class="desktop">
         <div class="desktop-icon" style="top: 20px; left: 20px;" ondblclick="openWindow('main-window')">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%230078d7'/><text x='20' y='26' font-family='Segoe UI' font-size='12' fill='white' text-anchor='middle'>PC</text></svg>" alt="Мой компьютер">
+            <img src="../../images/icons/8/mypc.ico" alt="Мой компьютер">
             <span>Мой компьютер</span>
         </div>
         <div class="desktop-icon" style="top: 100px; left: 20px;" ondblclick="openWindow('main-window')">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23d83b01'/><text x='20' y='26' font-family='Segoe UI' font-size='12' fill='white' text-anchor='middle'>Корз</text></svg>" alt="Корзина">
+            <img src="../../images/icons/8/bin.ico" alt="Корзина">
             <span>Корзина</span>
         </div>
         <div class="desktop-icon" style="top: 180px; left: 20px;" ondblclick="openWindow('main-window')">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23107c10'/><text x='20' y='26' font-family='Segoe UI' font-size='10' fill='white' text-anchor='middle'>Sys</text></svg>" alt="SysHelper">
+            <img src="../../files/logo.png" alt="SysHelper">
             <span>SysHelper</span>
         </div>
     </div>
@@ -536,9 +636,13 @@
                         <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='%238661c5'/><text x='24' y='30' font-family='Segoe UI' font-size='12' fill='white' text-anchor='middle'>7-Zip</text></svg>" alt="7-Zip">
                         <span>7-Zip</span>
                     </div>
-                    <div class="tile wide">
-                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='%230078d7'/><text x='24' y='30' font-family='Segoe UI' font-size='12' fill='white' text-anchor='middle'>Driver</text></svg>" alt="Driver Booster">
+                    <div class="tile red wide">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='%23e81123'/><text x='24' y='30' font-family='Segoe UI' font-size='12' fill='white' text-anchor='middle'>Driver</text></svg>" alt="Driver Booster">
                         <span>Driver Booster</span>
+                    </div>
+                    <div class="tile teal">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='%23008272'/><text x='24' y='30' font-family='Segoe UI' font-size='10' fill='white' text-anchor='middle'>Recuva</text></svg>" alt="Recuva">
+                        <span>Recuva</span>
                     </div>
                 </div>
             </div>
@@ -592,28 +696,38 @@
                 <div class="script-list">
                     <div class="script-item">
                         <div class="script-title">Очистка временных файлов</div>
-                        <div class="script-description">Скрипт удаляет временные файлы, кэш и другие ненужные данные для освобождения места на диске.</div>
-                        <button class="win-button" onclick="downloadScript('clean_temp_files.bat')">Скачать</button>
+                        <div class="script-description">Скрипт удаляет временные файлы, кэш и другие ненужные данные для освобождения места на диске. Безопасен для системы, удаляет только временные данные.</div>
+                        <button class="win-button" onclick="downloadScript('clean_temp_files.bat')">
+                            <i class="fas fa-download"></i> Скачать
+                        </button>
                     </div>
                     <div class="script-item">
                         <div class="script-title">Оптимизация реестра</div>
-                        <div class="script-description">Скрипт выполняет очистку и дефрагментацию реестра для улучшения производительности системы.</div>
-                        <button class="win-button" onclick="downloadScript('optimize_registry.ps1')">Скачать</button>
+                        <div class="script-description">Скрипт выполняет очистку и дефрагментацию реестра для улучшения производительности системы. Создает точку восстановления перед внесением изменений.</div>
+                        <button class="win-button" onclick="downloadScript('optimize_registry.ps1')">
+                            <i class="fas fa-download"></i> Скачать
+                        </button>
                     </div>
                     <div class="script-item">
                         <div class="script-title">Резервное копирование данных</div>
-                        <div class="script-description">Автоматическое создание резервных копий важных файлов и папок.</div>
-                        <button class="win-button" onclick="downloadScript('backup_script.bat')">Скачать</button>
+                        <div class="script-description">Автоматическое создание резервных копий важных файлов и папок. Настраиваемые пути и расписание выполнения.</div>
+                        <button class="win-button" onclick="downloadScript('backup_script.bat')">
+                            <i class="fas fa-download"></i> Скачать
+                        </button>
                     </div>
                     <div class="script-item">
                         <div class="script-title">Настройка сети</div>
-                        <div class="script-description">Автоматическая настройка сетевых параметров для улучшения соединения.</div>
-                        <button class="win-button" onclick="downloadScript('network_setup.ps1')">Скачать</button>
+                        <div class="script-description">Автоматическая настройка сетевых параметров для улучшения соединения. Сбрасывает кэш DNS и обновляет сетевые настройки.</div>
+                        <button class="win-button" onclick="downloadScript('network_setup.ps1')">
+                            <i class="fas fa-download"></i> Скачать
+                        </button>
                     </div>
                     <div class="script-item">
                         <div class="script-title">Восстановление системных файлов</div>
-                        <div class="script-description">Проверка и восстановление поврежденных системных файлов Windows.</div>
-                        <button class="win-button green" onclick="downloadScript('system_repair.bat')">Скачать</button>
+                        <div class="script-description">Проверка и восстановление поврежденных системных файлов Windows. Использует встроенные утилиты Windows для проверки целостности системы.</div>
+                        <button class="win-button green" onclick="downloadScript('system_repair.bat')">
+                            <i class="fas fa-download"></i> Скачать
+                        </button>
                     </div>
                 </div>
             </div>
@@ -623,26 +737,28 @@
     <!-- Панель задач -->
     <div class="taskbar">
         <div class="start-button" onclick="toggleStartMenu()">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><rect width='20' height='20' fill='%23ffffff'/><text x='10' y='15' font-family='Segoe UI' font-size='12' fill='%230078d7' text-anchor='middle'>Win</text></svg>" alt="Пуск">
+            <img src="../../images/icons/8/icons8-windows-8-100.png" alt="Пуск">
             Пуск
         </div>
         <div class="taskbar-items">
             <div class="taskbar-item active" id="taskbar-main" onclick="focusWindow('main-window')">
-                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><rect width='20' height='20' fill='%230078d7'/><text x='10' y='14' font-family='Segoe UI' font-size='10' fill='white' text-anchor='middle'>S</text></svg>" alt="SysHelper">
                 Windows 8.1 - SysHelper
             </div>
         </div>
         <div class="system-tray">
             <div class="tray-icon" onclick="toggleCharms()">
-                <span>☀</span>
+                <i class="fas fa-sun"></i>
             </div>
             <div class="tray-icon">
-                <span>🔊</span>
+                <i class="fas fa-volume-up"></i>
             </div>
             <div class="tray-icon">
-                <span>🌐</span>
+                <i class="fas fa-wifi"></i>
             </div>
             <div class="clock" id="clock">00:00:00</div>
+            <div class="tray-icon" style="font-size: 12px;">
+                <i class="fas fa-chevron-up"></i>
+            </div>
         </div>
     </div>
 
@@ -650,22 +766,54 @@
     <div class="start-menu" id="start-menu">
         <div class="start-menu-header">Windows 8.1</div>
         <div class="start-menu-content">
-            <div class="start-menu-tile" onclick="openWindow('main-window')">SysHelper</div>
-            <div class="start-menu-tile" onclick="openProgram('Internet Explorer')">Internet Explorer</div>
-            <div class="start-menu-tile" onclick="openProgram('Проводник')">Проводник</div>
-            <div class="start-menu-tile" onclick="openProgram('Калькулятор')">Калькулятор</div>
-            <div class="start-menu-tile" onclick="openProgram('Блокнот')">Блокнот</div>
-            <div class="start-menu-tile" onclick="exitToMain()">Выход</div>
+            <div class="start-menu-tile" onclick="openWindow('main-window')">
+                <i class="fas fa-tools" style="font-size: 24px;"></i>
+                <span>SysHelper</span>
+            </div>
+            <div class="start-menu-tile" onclick="openProgram('Internet Explorer')">
+                <i class="fab fa-internet-explorer" style="font-size: 24px;"></i>
+                <span>Internet Explorer</span>
+            </div>
+            <div class="start-menu-tile" onclick="openProgram('Проводник')">
+                <i class="fas fa-folder" style="font-size: 24px;"></i>
+                <span>Проводник</span>
+            </div>
+            <div class="start-menu-tile" onclick="openProgram('Калькулятор')">
+                <i class="fas fa-calculator" style="font-size: 24px;"></i>
+                <span>Калькулятор</span>
+            </div>
+            <div class="start-menu-tile" onclick="openProgram('Блокнот')">
+                <i class="fas fa-sticky-note" style="font-size: 24px;"></i>
+                <span>Блокнот</span>
+            </div>
+            <div class="start-menu-tile" onclick="exitToMain()">
+                <i class="fas fa-sign-out-alt" style="font-size: 24px;"></i>
+                <span>Выход</span>
+            </div>
         </div>
     </div>
 
     <!-- Charms bar -->
     <div class="charms-bar" id="charms-bar">
-        <div class="charms-item">Поиск</div>
-        <div class="charms-item">Общий доступ</div>
-        <div class="charms-item">Пуск</div>
-        <div class="charms-item">Устройства</div>
-        <div class="charms-item">Параметры</div>
+        <div class="charms-item">
+            <i class="fas fa-search" style="font-size: 20px;"></i>
+            <span>Поиск</span>
+        </div>
+        <div class="charms-item">
+            <i class="fas fa-share-alt" style="font-size: 20px;"></i>
+            <span>Общий доступ</span>
+        </div>
+        <div class="charms-item">
+            <span>Пуск</span>
+        </div>
+        <div class="charms-item">
+
+            <span>Устройства</span>
+        </div>
+        <div class="charms-item">
+            <i class="fas fa-cog" style="font-size: 20px;"></i>
+            <span>Параметры</span>
+        </div>
     </div>
 
     <script>
